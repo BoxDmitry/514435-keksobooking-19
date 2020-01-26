@@ -3,8 +3,8 @@
 var idAvatar = 1;
 var ADS_QUANTITY = 8;
 
-var FEATURES = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
-var PHOTOS = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 
 var mapElement = document.querySelector('.map');
@@ -67,16 +67,16 @@ var generationAd = function () {
       avatar: getAvatar()
     },
     offer: {
-      title: "Заголовок",
-      address: "600, 350", // {{location.x}}, {{location.y}}
+      title: 'Заголовок',
+      address: '600, 350', // {{location.x}}, {{location.y}}
       price: 1000,
-      type: "bungalo",
+      type: 'bungalo',
       rooms: 5,
       guests: 10,
-      checkin: "14:00",
-      checkout: "12:00",
+      checkin: '14:00',
+      checkout: '12:00',
       features: getFeatures(),
-      description: "Описание",
+      description: 'Описание',
       photos: getPhotos()
     },
     location: {
@@ -115,4 +115,3 @@ for (var i = 0; i < Ads.length; i++) {
   fragment.appendChild(renderPin(Ads[i]));
 }
 mapPointsElement.appendChild(fragment);
-console.log(pinTemplate);
