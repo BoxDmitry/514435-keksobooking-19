@@ -83,7 +83,7 @@ var generationAd = function () {
       x: getXLocation(),
       y: getYLocation()
     }
-  }
+  };
   return ad;
 };
 
@@ -93,7 +93,7 @@ var generationAds = function (quantity) {
     actualAds[actualAds.length] = generationAd();
   }
   return actualAds;
-}
+};
 
 var Ads = generationAds(ADS_QUANTITY);
 
