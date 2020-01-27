@@ -25,26 +25,15 @@ var getRandom = function (min, max) {
   return Math.floor(Math.random() * (most - least + 1)) + least;
 };
 
-var getFeatures = function () {
-  var actualFeatures = [];
-  var lengthFeatures = getRandom(0, FEATURES.length - 1);
+var getRendomArray = function (array) {
+  var actual = [];
+  var length = getRandom(0, array.length - 1);
 
-  for (var i = 0; i <= lengthFeatures; i++) {
-    actualFeatures[actualFeatures.length] = FEATURES[i];
+  for (var i = 0; i <= length; i++) {
+    actual[actual.length] = actual[i];
   }
 
-  return actualFeatures;
-};
-
-var getPhotos = function () {
-  var actualPhotos = [];
-  var lengthPhotos = getRandom(0, PHOTOS.length - 1);
-
-  for (var i = 0; i <= lengthPhotos; i++) {
-    actualPhotos[actualPhotos.length] = PHOTOS[i];
-  }
-
-  return actualPhotos;
+  return actual;
 };
 
 var getAvatar = function () {
@@ -75,9 +64,9 @@ var generationAd = function () {
       guests: 10,
       checkin: '14:00',
       checkout: '12:00',
-      features: getFeatures(),
+      features: getRendomArray(FEATURES),
       description: 'Описание',
-      photos: getPhotos()
+      photos: getRendomArray(PHOTOS)
     },
     location: {
       x: getXLocation(),
