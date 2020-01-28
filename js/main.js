@@ -47,7 +47,7 @@ var createSingleAdvertisement = function (index) {
   var avatarId = index < 10 ? '0' + index : index;
   var advertisement = {
     author: {
-      avatar:'img/avatars/user' + avatarId + '.png'
+      avatar: 'img/avatars/user' + avatarId + '.png'
     },
     offer: {
       title: 'Заголовок',
