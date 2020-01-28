@@ -53,14 +53,14 @@ var createSingleAdvertisement = function (index) {
       title: 'Заголовок',
       address: '600, 350', // {{location.x}}, {{location.y}}
       price: 1000,
-      type: getRandom(TYPES),
+      type: getRandomArray(TYPES),
       rooms: 5,
       guests: 10,
-      checkin: getRandom(TIMES),
-      checkout: getRandom(TIMES),
-      features: getRandom(FEATURES),
+      checkin: getRandomArray(TIMES),
+      checkout: getRandomArray(TIMES),
+      features: getRandomArray(FEATURES),
       description: 'Описание',
-      photos: getRandom(PHOTOS)
+      photos: getRandomArray(PHOTOS)
     },
     location: {
       x: getXLocation(),
