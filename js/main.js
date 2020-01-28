@@ -24,7 +24,7 @@ var getRandom = function (min, max) {
   return Math.floor(Math.random() * (most - least + 1)) + least;
 };
 
-var getRandomArray = function (array) {
+var getRandomArrayElement = function (array) {
   var actual = [];
   var length = getRandom(0, array.length - 1);
 
@@ -53,14 +53,14 @@ var createSingleAdvertisement = function (index) {
       title: 'Заголовок',
       address: '600, 350', // {{location.x}}, {{location.y}}
       price: 1000,
-      type: getRandomArray(TYPES),
+      type: getRandomArrayElement(TYPES),
       rooms: 5,
       guests: 10,
-      checkin: getRandomArray(TIMES),
-      checkout: getRandomArray(TIMES),
-      features: getRandomArray(FEATURES),
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
+      features: getRandomArrayElement(FEATURES),
       description: 'Описание',
-      photos: getRandomArray(PHOTOS)
+      photos: getRandomArrayElement(PHOTOS)
     },
     location: {
       x: getXLocation(),
