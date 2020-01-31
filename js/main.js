@@ -7,14 +7,9 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 
-var WIDTH_IMG = 45;
-var HEIGHT_IMG = 40;
-
 var mapElement = document.querySelector('.map');
 var mapPointsElement = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
-var cardTemplate  = document.querySelector('#card').content.querySelector('.map__card');
 
 var PIN_LEFT_OFFSET = pinTemplate.offsetWidth / 2;
 var PIN_TOP_OFFSET = pinTemplate.offsetHeight;
@@ -34,15 +29,11 @@ var getRandomArrayElement = function (array) {
   var length = getRandom(0, array.length - 1);
 
   for (var i = 0; i <= length; i++) {
-    actual[actual.length] = array[i];
+    actual[actual.length] = actual[i];
   }
 
   return actual;
 };
-
-var getRandomElement = function (array) {
-  return array[getRandom(0, array.length - 1)];
-}
 
 var getXLocation = function () {
   return getRandom(1, MAP_WIDTH);
@@ -62,11 +53,11 @@ var createSingleAdvertisement = function (index) {
       title: 'Заголовок',
       address: '600, 350', // {{location.x}}, {{location.y}}
       price: 1000,
-      type: getRandomElement(TYPES),
+      type: getRandomArrayElement(TYPES),
       rooms: 5,
       guests: 10,
-      checkin: getRandomElement(TIMES),
-      checkout: getRandomElement(TIMES),
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
       features: getRandomArrayElement(FEATURES),
       description: 'Описание',
       photos: getRandomArrayElement(PHOTOS)
@@ -107,59 +98,3 @@ for (var i = 0; i < advertisements.length; i++) {
   fragment.appendChild(renderPin(advertisements[i]));
 }
 mapPointsElement.appendChild(fragment);
-
-var renderCard = function (advertisement) {
-  var cardElement = cardTemplate.cloneNode(true);
-
-  var advertisementType;
-
-  if (advertisement.offer.type == 'flat') {
-    advertisementType = 'Квартира';
-  }else if (advertisement.offer.type == 'bungalo') {
-    advertisementType = 'Бунгало';
-  }else if (advertisement.offer.type == 'house') {
-    advertisementType = 'Дом';
-  }else if (advertisement.offer.type == 'palace') {
-    advertisementType = 'Дворец';
-  }
-
-  cardElement.querySelector('.popup__title').textContent = advertisement.offer.title;
-  cardElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-  cardElement.querySelector('.popup__type').textContent = advertisementType;
-  cardElement.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
-  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до '+ advertisement.offer.checkout;
-
-  cardElement.querySelector('.popup__features').innerHTML = '';
-  for (var i = 0; i < advertisement.offer.features.length; i++) {
-    var feature = advertisement.offer.features[i];
-
-    var domElementFeature = document.createElement('li');
-    domElementFeature.classList.add('popup__feature');
-    domElementFeature.classList.add('popup__feature--' + feature);
-
-    cardElement.querySelector('.popup__features').appendChild(domElementFeature);
-  }
-
-  cardElement.querySelector('.popup__photos').innerHTML = '';
-  for (var i = 0; i < advertisement.offer.photos.length; i++) {
-    var photos = advertisement.offer.photos[i];
-
-    var domElementFeature = document.createElement('img');
-    domElementFeature.classList.add('popup__photo');
-    domElementFeature.src = photos;
-    domElementFeature.width = WIDTH_IMG;
-    domElementFeature.height = HEIGHT_IMG;
-
-    cardElement.querySelector('.popup__photos').appendChild(domElementFeature);
-  }
-
-  cardElement.querySelector('.popup__description').textContent = advertisement.offer.description;
-  cardElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
-
-  return cardElement;
-};
-
-var card = document.createDocumentFragment();
-card.appendChild(renderCard(advertisements[0]));
-mapElement.appendChild(card);
