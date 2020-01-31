@@ -14,7 +14,7 @@ var mapElement = document.querySelector('.map');
 var mapPointsElement = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var cardTemplate  = document.querySelector('#card').content.querySelector('.map__card');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var PIN_LEFT_OFFSET = pinTemplate.offsetWidth / 2;
 var PIN_TOP_OFFSET = pinTemplate.offsetHeight;
@@ -42,7 +42,7 @@ var getRandomArrayElement = function (array) {
 
 var getRandomElement = function (array) {
   return array[getRandom(0, array.length - 1)];
-}
+};
 
 var getXLocation = function () {
   return getRandom(1, MAP_WIDTH);
@@ -113,13 +113,13 @@ var renderCard = function (advertisement) {
 
   var advertisementType;
 
-  if (advertisement.offer.type == 'flat') {
+  if (advertisement.offer.type === 'flat') {
     advertisementType = 'Квартира';
-  }else if (advertisement.offer.type == 'bungalo') {
+  } else if (advertisement.offer.type === 'bungalo') {
     advertisementType = 'Бунгало';
-  }else if (advertisement.offer.type == 'house') {
+  } else if (advertisement.offer.type === 'house') {
     advertisementType = 'Дом';
-  }else if (advertisement.offer.type == 'palace') {
+  } else if (advertisement.offer.type === 'palace') {
     advertisementType = 'Дворец';
   }
 
@@ -128,30 +128,30 @@ var renderCard = function (advertisement) {
   cardElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
   cardElement.querySelector('.popup__type').textContent = advertisementType;
   cardElement.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
-  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до '+ advertisement.offer.checkout;
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
 
   cardElement.querySelector('.popup__features').innerHTML = '';
-  for (var i = 0; i < advertisement.offer.features.length; i++) {
-    var feature = advertisement.offer.features[i];
+  for (var k = 0; k < advertisement.offer.features.length; k++) {
+    var feature = advertisement.offer.features[k];
 
-    var domElementFeature = document.createElement('li');
-    domElementFeature.classList.add('popup__feature');
-    domElementFeature.classList.add('popup__feature--' + feature);
+    var featureElementFeature = document.createElement('li');
+    featureElementFeature.classList.add('popup__feature');
+    featureElementFeature.classList.add('popup__feature--' + feature);
 
-    cardElement.querySelector('.popup__features').appendChild(domElementFeature);
+    cardElement.querySelector('.popup__features').appendChild(featureElementFeature);
   }
 
   cardElement.querySelector('.popup__photos').innerHTML = '';
-  for (var i = 0; i < advertisement.offer.photos.length; i++) {
-    var photos = advertisement.offer.photos[i];
+  for (var l = 0; l < advertisement.offer.photos.length; l++) {
+    var photos = advertisement.offer.photos[l];
 
-    var domElementFeature = document.createElement('img');
-    domElementFeature.classList.add('popup__photo');
-    domElementFeature.src = photos;
-    domElementFeature.width = WIDTH_IMG;
-    domElementFeature.height = HEIGHT_IMG;
+    var photosElementFeature = document.createElement('img');
+    photosElementFeature.classList.add('popup__photo');
+    photosElementFeature.src = photos;
+    photosElementFeature.width = WIDTH_IMG;
+    photosElementFeature.height = HEIGHT_IMG;
 
-    cardElement.querySelector('.popup__photos').appendChild(domElementFeature);
+    cardElement.querySelector('.popup__photos').appendChild(photosElementFeature);
   }
 
   cardElement.querySelector('.popup__description').textContent = advertisement.offer.description;
