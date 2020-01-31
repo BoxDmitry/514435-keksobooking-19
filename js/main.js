@@ -110,6 +110,7 @@ mapPointsElement.appendChild(fragment);
 
 var renderCard = function (advertisement) {
   var cardElement = cardTemplate.cloneNode(true);
+
   var advertisementType;
 
   if (advertisement.offer.type == 'flat') {
