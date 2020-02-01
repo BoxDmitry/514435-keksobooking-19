@@ -117,7 +117,7 @@ var renderPin = function (advertisement) {
   return pinElement;
 };
 
-/*var renderCard = function (advertisement) {
+/* var renderCard = function (advertisement) {
   var cardElement = cardTemplate.cloneNode(true);
 
   var advertisementType;
@@ -167,7 +167,7 @@ var renderPin = function (advertisement) {
   cardElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
   return cardElement;
-};*/
+}; */
 
 // var card = document.createDocumentFragment();
 // card.appendChild(renderCard(advertisements[0]));
