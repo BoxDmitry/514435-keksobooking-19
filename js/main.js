@@ -7,8 +7,8 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 
-var WIDTH_IMG = 45;
-var HEIGHT_IMG = 40;
+// var WIDTH_IMG = 45;
+// var HEIGHT_IMG = 40;
 
 var MAX_CAPACITY_ROOMS = 100;
 
@@ -21,7 +21,7 @@ var mapElement = document.querySelector('.map');
 var mapPointsElement = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+// var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var mapPinMainElement = document.querySelector('.map__pin--main');
 
@@ -117,7 +117,7 @@ var renderPin = function (advertisement) {
   return pinElement;
 };
 
-var render/*Card = function (advertisement) {
+/*var renderCard = function (advertisement) {
   var cardElement = cardTemplate.cloneNode(true);
 
   var advertisementType;
@@ -169,9 +169,9 @@ var render/*Card = function (advertisement) {
   return cardElement;
 };*/
 
-/*var card = document.createDocumentFragment();
-card.appendChild(renderCard(advertisements[0]));
-mapElement.appendChild(card);*/
+// var card = document.createDocumentFragment();
+// card.appendChild(renderCard(advertisements[0]));
+// mapElement.appendChild(card);
 
 var activatedForm = function () {
   var fragment = document.createDocumentFragment();
@@ -198,7 +198,7 @@ var activatedForm = function () {
   var locationX = mapPinMainElement.offsetLeft + PIN_WIDTH / 2;
   var locationY = mapPinMainElement.offsetTop + PIN_HEIGHT / 2 + PIN_HEIGHT_OFFSET;
 
-  formAdresInput.value = locationX + ", " + locationY;
+  formAdresInput.value = locationX + ', ' + locationY;
 };
 
 var inputElementsArray = document.querySelectorAll('input');
@@ -214,7 +214,7 @@ for (var l = 0; l < selectElementsArray.length; l++) {
 var onActivatedForm = function (evt) {
   var btnCode = evt.button;
 
-  if (btnCode == LEFT_BUTTON_MOUS_KEY) {
+  if (btnCode === LEFT_BUTTON_MOUS_KEY) {
     activatedForm();
   }
 };
@@ -225,21 +225,21 @@ var onCapacity = function () {
 
   for (var r = 0; r < optionCapacityArray.length; r++) {
     if (collRooms < MAX_CAPACITY_ROOMS) {
-      var elementCapacity = optionCapacityArray[r];
-      if (collRooms < elementCapacity.value || Number(elementCapacity.value) === 0) {
-        elementCapacity.disabled = true;
-        elementCapacity.selected = false;
+      var elementCapacityMin = optionCapacityArray[r];
+      if (collRooms < elementCapacityMin.value || Number(elementCapacityMin.value) === 0) {
+        elementCapacityMin.disabled = true;
+        elementCapacityMin.selected = false;
       } else {
-        elementCapacity.disabled = false;
+        elementCapacityMin.disabled = false;
       }
     } else {
-      var elementCapacity = optionCapacityArray[r];
-      if (Number(elementCapacity.value) === 0) {
-        elementCapacity.disabled = false;
-        elementCapacity.selected = true;
+      var elementCapacityMax = optionCapacityArray[r];
+      if (Number(elementCapacityMax.value) === 0) {
+        elementCapacityMax.disabled = false;
+        elementCapacityMax.selected = true;
       } else {
-        elementCapacity.disabled = true;
-        elementCapacity.selected = false;
+        elementCapacityMax.disabled = true;
+        elementCapacityMax.selected = false;
       }
     }
   }
@@ -265,4 +265,4 @@ for (var r = 0; r < optionCapacityArray.length; r++) {
 var locationX = mapPinMainElement.offsetLeft + PIN_WIDTH / 2;
 var locationY = mapPinMainElement.offsetTop + PIN_HEIGHT / 2;
 
-formAdresInput.value = locationX + ", " + locationY;
+formAdresInput.value = locationX + ', ' + locationY;
