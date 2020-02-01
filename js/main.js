@@ -117,7 +117,7 @@ var renderPin = function (advertisement) {
   return pinElement;
 };
 
-var renderCard = function (advertisement) {
+var render/*Card = function (advertisement) {
   var cardElement = cardTemplate.cloneNode(true);
 
   var advertisementType;
@@ -167,11 +167,11 @@ var renderCard = function (advertisement) {
   cardElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
   return cardElement;
-};
+};*/
 
-//var card = document.createDocumentFragment();
-//card.appendChild(renderCard(advertisements[0]));
-//mapElement.appendChild(card);
+/*var card = document.createDocumentFragment();
+card.appendChild(renderCard(advertisements[0]));
+mapElement.appendChild(card);*/
 
 var activatedForm = function () {
   var fragment = document.createDocumentFragment();
@@ -185,7 +185,7 @@ var activatedForm = function () {
 
   var inputElementsArray = document.querySelectorAll('input');
   for (var t = 0; t < inputElementsArray.length; t++) {
-    if (inputElementsArray[t].name != NAME_ADDRESS_INPUT) {
+    if (inputElementsArray[t].name !== NAME_ADDRESS_INPUT) {
       inputElementsArray[t].disabled = false;
     }
   }
@@ -199,7 +199,7 @@ var activatedForm = function () {
   var locationY = mapPinMainElement.offsetTop + PIN_HEIGHT / 2 + PIN_HEIGHT_OFFSET;
 
   formAdresInput.value = locationX + ", " + locationY;
-}
+};
 
 var inputElementsArray = document.querySelectorAll('input');
 for (var t = 0; t < inputElementsArray.length; t++) {
@@ -226,24 +226,24 @@ var onCapacity = function () {
   for (var r = 0; r < optionCapacityArray.length; r++) {
     if (collRooms < MAX_CAPACITY_ROOMS) {
       var elementCapacity = optionCapacityArray[r];
-      if (collRooms < elementCapacity.value || elementCapacity.value == 0) {
+      if (collRooms < elementCapacity.value || Number(elementCapacity.value) === 0) {
         elementCapacity.disabled = true;
         elementCapacity.selected = false;
-      }else {
+      } else {
         elementCapacity.disabled = false;
       }
-    }else {
+    } else {
       var elementCapacity = optionCapacityArray[r];
-      if (elementCapacity.value == 0) {
+      if (Number(elementCapacity.value) === 0) {
         elementCapacity.disabled = false;
         elementCapacity.selected = true;
-      }else {
+      } else {
         elementCapacity.disabled = true;
         elementCapacity.selected = false;
       }
     }
   }
-}
+};
 
 mapPinMainElement.addEventListener('mousedown', onActivatedForm);
 
@@ -256,7 +256,7 @@ mapPinMainElement.addEventListener('keydown', function (evt) {
 formRoomsSelect.addEventListener('input', onCapacity);
 var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
 for (var r = 0; r < optionCapacityArray.length; r++) {
-  if (optionCapacityArray[r].value != formRoomsSelect.value) {
+  if (optionCapacityArray[r].value !== formRoomsSelect.value) {
     optionCapacityArray[r].disabled = true;
     optionCapacityArray[r].selected = false;
   }
