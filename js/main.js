@@ -235,7 +235,7 @@ var hiddenAdvertisement = function () {
   document.removeEventListener('keydown', onHiddenAdvertisement);
   card.querySelector('.popup__close').removeEventListener('click', onButtonHiddenAdvertisement);
   card.remove();
-}
+};
 
 var onActivatedForm = function (evt) {
   if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
@@ -253,7 +253,7 @@ var onButtonHiddenAdvertisement = function (evt) {
   if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
     hiddenAdvertisement();
   }
-}
+};
 
 var onShowAdvertisement = function (evt) {
   var idAdvertisement = evt.toElement.dataset.advertisement;
@@ -319,11 +319,11 @@ var onTimeIn = function () {
   for (var y = 0; y < optionTimeArray.length; y++) {
     if (timeIn !== optionTimeArray[y].value) {
       optionTimeArray[y].selected = false;
-    }else {
+    } else {
       optionTimeArray[y].selected = true;
     }
   }
-}
+};
 
 var onTimeOut = function () {
   var timeOut = formTimeOutSelect.value;
@@ -332,11 +332,11 @@ var onTimeOut = function () {
   for (var e = 0; e < optionTimeArray.length; e++) {
     if (timeOut !== optionTimeArray[e].value) {
       optionTimeArray[e].selected = false;
-    }else {
+    } else {
       optionTimeArray[e].selected = true;
     }
   }
-}
+};
 
 mapPinMainElement.addEventListener('mousedown', onActivatedForm);
 
