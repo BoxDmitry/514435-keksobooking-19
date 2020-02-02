@@ -7,13 +7,13 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 
-// var WIDTH_IMG = 45;
-// var HEIGHT_IMG = 40;
+ var WIDTH_IMG = 45;
+ var HEIGHT_IMG = 40;
 
 var MAX_CAPACITY_ROOMS = 100;
 
 var ENTER_KEY = 'Enter';
-var LEFT_BUTTON_MOUS_KEY = 0;
+var LEFT_BUTTON_MOUSE_KEY = 0;
 
 var NAME_ADDRESS_INPUT = 'address';
 
@@ -21,11 +21,11 @@ var mapElement = document.querySelector('.map');
 var mapPointsElement = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-// var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+ var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var mapPinMainElement = document.querySelector('.map__pin--main');
 
-var formAdresInput = document.querySelector('#address');
+var formAddressInput = document.querySelector('#address');
 var formRoomsSelect = document.querySelector('#room_number');
 var formCapacitySelect = document.querySelector('#capacity');
 
@@ -117,7 +117,7 @@ var renderPin = function (advertisement) {
   return pinElement;
 };
 
-/* var renderCard = function (advertisement) {
+var renderCard = function (advertisement) {
   var cardElement = cardTemplate.cloneNode(true);
 
   var advertisementType;
@@ -167,13 +167,9 @@ var renderPin = function (advertisement) {
   cardElement.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
   return cardElement;
-}; */
+};
 
-// var card = document.createDocumentFragment();
-// card.appendChild(renderCard(advertisements[0]));
-// mapElement.appendChild(card);
-
-var activatedForm = function () {
+var activateForm = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < advertisements.length; i++) {
     fragment.appendChild(renderPin(advertisements[i]));
@@ -183,22 +179,26 @@ var activatedForm = function () {
   mapElement.classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
-  var inputElementsArray = document.querySelectorAll('input');
-  for (var t = 0; t < inputElementsArray.length; t++) {
-    if (inputElementsArray[t].name !== NAME_ADDRESS_INPUT) {
-      inputElementsArray[t].disabled = false;
+ var card = document.createDocumentFragment();
+ card.appendChild(renderCard(advertisements[0]));
+ mapElement.appendChild(card);
+
+  var inputElements = document.querySelectorAll('input');
+  for (var t = 0; t < inputElements.length; t++) {
+    if (inputElements[t].name !== NAME_ADDRESS_INPUT) {
+      inputElements[t].disabled = false;
     }
   }
 
-  var selectElementsArray = document.querySelectorAll('select');
-  for (var l = 0; l < selectElementsArray.length; l++) {
-    selectElementsArray[l].disabled = false;
+  var selectElements = document.querySelectorAll('select');
+  for (var l = 0; l < selectElements.length; l++) {
+    selectElements[l].disabled = false;
   }
 
   var locationX = mapPinMainElement.offsetLeft + PIN_WIDTH / 2;
   var locationY = mapPinMainElement.offsetTop + PIN_HEIGHT / 2 + PIN_HEIGHT_OFFSET;
 
-  formAdresInput.value = locationX + ', ' + locationY;
+  formAddressInput.value = locationX + ', ' + locationY;
 };
 
 var inputElementsArray = document.querySelectorAll('input');
@@ -214,8 +214,8 @@ for (var l = 0; l < selectElementsArray.length; l++) {
 var onActivatedForm = function (evt) {
   var btnCode = evt.button;
 
-  if (btnCode === LEFT_BUTTON_MOUS_KEY) {
-    activatedForm();
+  if (btnCode === LEFT_BUTTON_MOUSE_KEY) {
+    activateForm();
   }
 };
 
@@ -249,7 +249,7 @@ mapPinMainElement.addEventListener('mousedown', onActivatedForm);
 
 mapPinMainElement.addEventListener('keydown', function (evt) {
   if (evt.key === ENTER_KEY) {
-    activatedForm();
+    activateForm();
   }
 });
 
@@ -265,4 +265,4 @@ for (var r = 0; r < optionCapacityArray.length; r++) {
 var locationX = mapPinMainElement.offsetLeft + PIN_WIDTH / 2;
 var locationY = mapPinMainElement.offsetTop + PIN_HEIGHT / 2;
 
-formAdresInput.value = locationX + ', ' + locationY;
+formAddressInput.value = locationX + ', ' + locationY;
