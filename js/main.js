@@ -7,8 +7,8 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 
- var WIDTH_IMG = 45;
- var HEIGHT_IMG = 40;
+var WIDTH_IMG = 45;
+var HEIGHT_IMG = 40;
 
 var MAX_CAPACITY_ROOMS = 100;
 
@@ -21,7 +21,7 @@ var mapElement = document.querySelector('.map');
 var mapPointsElement = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
- var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var mapPinMainElement = document.querySelector('.map__pin--main');
 
@@ -179,9 +179,9 @@ var activateForm = function () {
   mapElement.classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
- var card = document.createDocumentFragment();
- card.appendChild(renderCard(advertisements[0]));
- mapElement.appendChild(card);
+  var card = document.createDocumentFragment();
+  card.appendChild(renderCard(advertisements[0]));
+  mapElement.appendChild(card);
 
   var inputElements = document.querySelectorAll('input');
   for (var t = 0; t < inputElements.length; t++) {
