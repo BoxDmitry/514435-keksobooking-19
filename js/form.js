@@ -124,8 +124,8 @@
     }
 
     var selectElements = document.querySelectorAll('select');
-    for (var i = 0; i < selectElements.length; i++) {
-      selectElements[i].disabled = false;
+    for (var e = 0; e < selectElements.length; e++) {
+      selectElements[e].disabled = false;
     }
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.PIN_WIDTH / 2;
