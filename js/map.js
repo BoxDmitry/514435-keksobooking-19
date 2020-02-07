@@ -23,5 +23,5 @@
   window.map = {
     pinMainElement: mapPinMainElement,
     element: mapElement
-  }
+  };
 })();

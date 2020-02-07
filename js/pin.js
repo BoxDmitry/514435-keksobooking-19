@@ -2,7 +2,7 @@
 
 (function () {
   var ESC_KEY = 'Escape';
-  var ESC_KEY = 'Escape';
+  var LEFT_BUTTON_MOUSE_KEY = 0;
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapElement = document.querySelector('.map');
@@ -26,10 +26,6 @@
 
   var PIN_LEFT_OFFSET = pinTemplate.offsetWidth / 2;
   var PIN_TOP_OFFSET = pinTemplate.offsetHeight;
-
-  var MAP_WIDTH = mapPointsElement.offsetWidth;
-  var MAP_HEIGHT_MIN = 130;
-  var MAP_HEIGHT_MAX = 630;
 
   var hiddenAdvertisement = function () {
     var card = document.querySelector('.map__card');
@@ -72,5 +68,5 @@
     PIN_HEIGHT_OFFSET: PIN_HEIGHT_OFFSET,
     render: renderPin,
     pointsElement: mapPointsElement
-  }
+  };
 })();

@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC_KEY = 'Escape';
+
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   var WIDTH_IMG = 45;

@@ -6,7 +6,6 @@
   var MAX_CAPACITY_ROOMS = 100;
 
   var mapPinMainElement = document.querySelector('.map__pin--main');
-  var mapElement = document.querySelector('.map');
 
   var MIN_PRICE_BUNGALO = 0;
   var MIN_PRICE_FLAT = 1000;
@@ -118,15 +117,15 @@
 
 
     var inputElements = document.querySelectorAll('input');
-    for (var t = 0; t < inputElements.length; t++) {
-      if (inputElements[t].name !== NAME_ADDRESS_INPUT) {
-        inputElements[t].disabled = false;
+    for (var r = 0; t < inputElements.length; r++) {
+      if (inputElements[r].name !== NAME_ADDRESS_INPUT) {
+        inputElements[r].disabled = false;
       }
     }
 
     var selectElements = document.querySelectorAll('select');
-    for (var l = 0; l < selectElements.length; l++) {
-      selectElements[l].disabled = false;
+    for (var i = 0; i < selectElements.length; i++) {
+      selectElements[i].disabled = false;
     }
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.PIN_WIDTH / 2;
