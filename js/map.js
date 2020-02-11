@@ -3,12 +3,12 @@
 (function () {
   var mapElement = document.querySelector('.map');
   var mapPinMainElement = document.querySelector('.map__pin--main');
-  var ENTER_KEY = 'Enter';
-  var LEFT_BUTTON_MOUSE_KEY = 0;
+  var ENTER_KEY = window.constants.enterKey;
+  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
 
   var onActivatedForm = function (evt) {
     if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
-      window.form();
+      window.form.activate();
     }
   };
 
@@ -16,7 +16,7 @@
 
   mapPinMainElement.addEventListener('keydown', function (evt) {
     if (evt.key === ENTER_KEY) {
-      window.form();
+      window.form.activate();
     }
   });
 

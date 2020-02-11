@@ -48,19 +48,24 @@
     }
   };
 
-  var onType = function () {
+  var onTypeChanged = function () {
     var type = formTypeSelect.value;
 
     var minPrice = 0;
 
-    if (type === 'bungalo') {
-      minPrice = MIN_PRICE_BUNGALO;
-    } else if (type === 'flat') {
-      minPrice = MIN_PRICE_FLAT;
-    } else if (type === 'house') {
-      minPrice = MIN_PRICE_HOUSE;
-    } else if (type === 'palace') {
-      minPrice = MIN_PRICE_PALACE;
+    switch (type) {
+      case 'bungalo':
+        minPrice = MIN_PRICE_BUNGALO;
+      break;
+      case 'flat':
+        minPrice = MIN_PRICE_FLAT;
+      break;
+      case 'house':
+        minPrice = MIN_PRICE_HOUSE;
+      break;
+      case 'palace':
+        minPrice = MIN_PRICE_PALACE;
+      break;
     }
 
     formPriceSelect.min = minPrice;
@@ -117,7 +122,7 @@
 
 
     var inputElements = document.querySelectorAll('input');
-    for (var r = 0; t < inputElements.length; r++) {
+    for (var r = 0; r < inputElements.length; r++) {
       if (inputElements[r].name !== NAME_ADDRESS_INPUT) {
         inputElements[r].disabled = false;
       }
@@ -128,11 +133,11 @@
       selectElements[e].disabled = false;
     }
 
-    var locationX = mapPinMainElement.offsetLeft + window.pin.PIN_WIDTH / 2;
-    var locationY = mapPinMainElement.offsetTop + window.pin.PIN_HEIGHT / 2 + window.pin.PIN_HEIGHT_OFFSET;
+    var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
+    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2 + window.pin.HEIGHT_OFFSET;
 
     formRoomsSelect.addEventListener('input', onCapacity);
-    formTypeSelect.addEventListener('input', onType);
+    formTypeSelect.addEventListener('input', onTypeChanged);
     formTimeInSelect.addEventListener('input', onTimeIn);
     formTimeOutSelect.addEventListener('input', onTimeOut);
 
@@ -150,10 +155,12 @@
   formPriceSelect.min = MIN_PRICE_FLAT;
   formPriceSelect.placeholder = MIN_PRICE_FLAT;
 
-  var locationX = mapPinMainElement.offsetLeft + window.pin.PIN_WIDTH / 2;
-  var locationY = mapPinMainElement.offsetTop + window.pin.PIN_HEIGHT / 2;
+  var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
+  var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
 
   formAddressInput.value = locationX + ', ' + locationY;
 
-  window.form = activateForm;
+  window.form = {
+    activate: activateForm
+  };
 })();

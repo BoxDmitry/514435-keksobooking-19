@@ -34,7 +34,7 @@
     card.remove();
   };
 
-  var renderCard = window.card;
+  var renderCard = window.card.render;
 
   var onShowAdvertisement = function (evt) {
     var idAdvertisement = evt.toElement.dataset.advertisement;
@@ -63,9 +63,9 @@
   };
 
   window.pin = {
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT,
-    PIN_HEIGHT_OFFSET: PIN_HEIGHT_OFFSET,
+    WIDTH: PIN_WIDTH,
+    HEIGHT: PIN_HEIGHT,
+    HEIGHT_OFFSET: PIN_HEIGHT_OFFSET,
     render: renderPin,
     pointsElement: mapPointsElement
   };
