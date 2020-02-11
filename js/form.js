@@ -56,16 +56,16 @@
     switch (type) {
       case 'bungalo':
         minPrice = MIN_PRICE_BUNGALO;
-      break;
+        break;
       case 'flat':
         minPrice = MIN_PRICE_FLAT;
-      break;
+        break;
       case 'house':
         minPrice = MIN_PRICE_HOUSE;
-      break;
+        break;
       case 'palace':
         minPrice = MIN_PRICE_PALACE;
-      break;
+        break;
     }
 
     formPriceSelect.min = minPrice;

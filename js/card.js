@@ -36,16 +36,16 @@
     switch (advertisement.offer.type) {
       case 'flat':
         advertisementType = 'Квартира';
-      break;
+        break;
       case 'bungalo':
         advertisementType = 'Бунгало';
-      break;
+        break;
       case 'house':
         advertisementType = 'Дом';
-      break;
+        break;
       case 'palace':
         advertisementType = 'Дворец';
-      break;
+        break;
     }
 
     cardElement.querySelector('.popup__title').textContent = advertisement.offer.title;

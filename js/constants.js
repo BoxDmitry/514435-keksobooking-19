@@ -9,5 +9,5 @@
     escKey: ESC_KEY,
     enterKey: ENTER_KEY,
     leftBittonMouseKey: LEFT_BUTTON_MOUSE_KEY
-  }
+  };
 })();
