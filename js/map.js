@@ -14,8 +14,6 @@
       y: evt.clientY
     };
 
-    var dragged = false;
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       dragged = true;
@@ -29,8 +27,6 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-
-      var settingsElem = window.constants.settingsWindow;
 
       var newTop = mapPinMainElement.offsetTop - shift.y;
       var newLest = mapPinMainElement.offsetLeft - shift.x;
