@@ -8,9 +8,9 @@
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var TIMES = ['12:00', '13:00', '14:00'];
 
-  var MAP_WIDTH = document.querySelector('.map__pins').offsetWidth;
-  var MAP_HEIGHT_MIN = 130;
-  var MAP_HEIGHT_MAX = 630;
+  var MAP_WIDTH = window.constants.mapWidth;
+  var MAP_HEIGHT_MIN = window.constants.mapHeightMin;
+  var MAP_HEIGHT_MAX = window.constants.mapHeightMax;
 
   var getRandom = function (min, max) {
     var least = Math.ceil(min);
