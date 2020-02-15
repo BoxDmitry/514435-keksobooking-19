@@ -48,10 +48,27 @@
         break;
     }
 
-    cardElement.querySelector('.popup__title').textContent = advertisement.offer.title;
-    cardElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = advertisementType;
+    if (advertisement.offer.title.length > 0) {
+      cardElement.querySelector('.popup__title').textContent = advertisement.offer.title;
+    }else {
+      cardElement.querySelector('.popup__title').remove;
+    }
+
+    if (advertisement.offer.address.length > 0) {
+      cardElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
+    }else {
+      cardElement.querySelector('.popup__text--address').remove;
+    }
+
+    if (advertisement.offer.price.length > 0)
+      cardElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
+    }else {
+      cardElement.querySelector('.popup__text--price').remove;
+    }
+
+    if (advertisementType.length > 0)
+      cardElement.querySelector('.popup__type').textContent = advertisementType;
+    }
 
     var popupText = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--capacity').textContent = popupText;
