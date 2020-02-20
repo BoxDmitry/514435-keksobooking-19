@@ -5,6 +5,10 @@
     OK: 200
   };
 
+  var url = {
+    data: 'https://js.dump.academy/keksobooking/data',
+  }
+
   var load = function (onLoad, onError, URL) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -25,6 +29,7 @@
   };
 
   window.backend = {
-    load: load
+    load: load,
+    url: url
   };
 })();

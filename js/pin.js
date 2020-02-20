@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var ESC_KEY = 'Escape';
+  var ESC_KEY = window.constants.escKey;
   var LEFT_BUTTON_MOUSE_KEY = 0;
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
