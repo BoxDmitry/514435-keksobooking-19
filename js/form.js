@@ -103,6 +103,11 @@
     inputElementsArray[t].disabled = true;
   }
 
+  var textareaElementsArray = document.querySelectorAll('textarea');
+  for (var y = 0; y < textareaElementsArray.length; y++) {
+    textareaElementsArray[y].disabled = true;
+  }
+
   var selectElementsArray = document.querySelectorAll('select');
   for (var l = 0; l < selectElementsArray.length; l++) {
     selectElementsArray[l].disabled = true;
@@ -126,6 +131,11 @@
       if (inputElements[r].name !== NAME_ADDRESS_INPUT) {
         inputElements[r].disabled = false;
       }
+    }
+
+    var textareaElements = document.querySelectorAll('textarea');
+    for (var q = 0; q < textareaElements.length; q++) {
+      textareaElements[q].disabled = false;
     }
 
     var selectElements = document.querySelectorAll('select');
