@@ -5,7 +5,7 @@
     window.data = advertisements;
   };
 
-  var errorHandler = function (errorMessage) {
+  var errorHandler = function () {
     var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
     errorElement.querySelector('.error__message').textContent = 'Не удалось загрузить похожие объявления';
@@ -16,7 +16,7 @@
       document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
       document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestKey);
       document.querySelector('.error').remove();
-      var actualAdvertisements = window.backend.load(successHandler, errorHandler, window.backend.url.data);
+      sendRequest();
     };
 
     var onRepeatRequestKey = function (evt) {
@@ -33,5 +33,9 @@
     document.querySelector('.error__button').addEventListener('keydown', onRepeatRequestKey);
   };
 
-  var actualAdvertisements = window.backend.load(successHandler, errorHandler, window.backend.url.data);
+  var sendRequest = function () {
+    window.backend.load(successHandler, errorHandler, window.backend.url.data);
+  };
+
+  sendRequest();
 })();

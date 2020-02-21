@@ -7,7 +7,7 @@
 
   var url = {
     data: 'https://js.dump.academy/keksobooking/data',
-  }
+  };
 
   var load = function (onLoad, onError, URL) {
     var xhr = new XMLHttpRequest();

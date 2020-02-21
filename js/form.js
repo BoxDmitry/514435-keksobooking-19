@@ -104,8 +104,8 @@
   }
 
   var textareaElementsArray = document.querySelectorAll('textarea');
-  for (var t = 0; t < textareaElementsArray.length; t++) {
-    textareaElementsArray[t].disabled = true;
+  for (var y = 0; y < textareaElementsArray.length; y++) {
+    textareaElementsArray[y].disabled = true;
   }
 
   var selectElementsArray = document.querySelectorAll('select');
@@ -133,9 +133,9 @@
       }
     }
 
-    var textareaElementsArray = document.querySelectorAll('textarea');
-    for (var t = 0; t < textareaElementsArray.length; t++) {
-      textareaElementsArray[t].disabled = false;
+    var textareaElements = document.querySelectorAll('textarea');
+    for (var q = 0; q < textareaElements.length; q++) {
+      textareaElements[q].disabled = false;
     }
 
     var selectElements = document.querySelectorAll('select');
