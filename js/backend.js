@@ -5,31 +5,87 @@
     OK: 200
   };
 
-  var url = {
+  var API_URL = {
     data: 'https://js.dump.academy/keksobooking/data',
+    send: 'https://js.dump.academy/keksobooking'
   };
 
-  var load = function (onLoad, onError, URL) {
+  var errorHandler = function (textMessage, sendRequest) {
+    if (!document.querySelector('.error')) {
+      var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+
+      errorElement.querySelector('.error__message').textContent = textMessage;
+
+      document.querySelector('main').appendChild(errorElement);
+      errorElement.addEventListener('click', onRepeatRequestClick);
+    }
+
+    var repeatRequest = function () {
+      document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
+      document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestEscKey);
+      errorElement.removeEventListener('click', onRepeatRequestClick);
+      document.querySelector('.error').remove();
+      sendRequest();
+    };
+
+    var onRepeatRequestKey = function (evt) {
+      if (evt.key === window.constants.enterKey) {
+        repeatRequest();
+      }
+    };
+
+    var onRepeatRequestEscKey = function (evt) {
+      if (evt.key === window.constants.escKey) {
+        repeatRequest();
+      }
+    };
+
+    var onRepeatRequest = function () {
+      repeatRequest();
+    };
+
+    var onRepeatRequestClick = function (evt) {
+      if (evt.target.classList.value !== 'error__message' && evt.target.classList.value !== 'error__button') {
+        repeatRequest();
+      }
+    };
+
+    document.querySelector('.error__button').addEventListener('click', onRepeatRequest);
+    document.querySelector('.error__button').addEventListener('keydown', onRepeatRequestKey);
+    document.addEventListener('keydown', onRepeatRequestEscKey);
+  };
+
+  var getXhr = function (dataType, onLoad, onError, URL, DATA, metod, sendRequest) {
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+    xhr.responseType = dataType;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, sendRequest);
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError('Произошла ошибка соединения', sendRequest);
     });
 
-    xhr.open('GET', URL);
-    xhr.send();
+    xhr.open(metod, URL);
+    xhr.send(DATA);
+  };
+
+  var save = function (onLoad, onError, URL, DATA, sendRequest) {
+    getXhr('', onLoad, onError, URL, DATA, 'POST', sendRequest);
+  };
+
+  var load = function (onLoad, onError, URL, sendRequest) {
+    getXhr('json', onLoad, onError, URL, '', 'GET', sendRequest);
   };
 
   window.backend = {
     load: load,
-    url: url
+    save: save,
+    errorXhr: errorHandler,
+    API_URL: API_URL
   };
 })();
