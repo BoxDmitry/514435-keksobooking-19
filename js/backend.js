@@ -7,7 +7,7 @@
 
   var API_URL = {
     data: 'https://js.dump.academy/keksobooking/data',
-    send: 'https://js.dump.academy/keksobooking'
+    save: 'https://js.dump.academy/keksobooking/'
   };
 
   var errorHandler = function (textMessage, sendRequest) {
@@ -28,7 +28,7 @@
     };
 
     var onRepeatRequestClick = function (evt) {
-      if (evt.target.classList.value !== 'error__message' && evt.target.classList.value !== 'error__button') {
+      if (evt.target.classList.value === 'error') {
         repeatRequest();
       }
     };

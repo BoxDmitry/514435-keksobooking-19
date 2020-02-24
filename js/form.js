@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var NAME_ADDRESS_INPUT = 'address';
   var INPUT_FORM_NAME = ['title', 'price'];
   var CLASS_LIST_BUTTON_MAP = 'map__pin map__pin--main';
 
@@ -230,15 +229,40 @@
 
     if (validateFormStat) {
       var successHandler = function () {
+        var hideSuccess = function () {
+          var successElement = document.querySelector('.success');
+
+          successElement.removeEventListener('click', onHideSuccessClick);
+          document.removeEventListener('keydown', onHideSuccessKeydown);
+
+          successElement.remove();
+        };
+
+        var onHideSuccessClick = function (evt) {
+          if (evt.target.classList.value === 'success') {
+            hideSuccess();
+          }
+        };
+
+        var onHideSuccessKeydown = function (evt) {
+          console.log('esc');
+          if (evt.key === window.constants.escKey) {
+            hideSuccess();
+          }
+        };
+
         var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 
-        successElement.querySelector('.success__message').textContent = 'Ваше объявление<br>успешно размещено!';
+        successElement.querySelector('.success__message').innerHTML = 'Ваше объявление<br>успешно размещено!';
+
+        successElement.addEventListener('click', onHideSuccessClick);
+        document.addEventListener('keydown', onHideSuccessKeydown);
 
         document.querySelector('main').appendChild(successElement);
       };
 
       var sendForm = function () {
-        window.backend.save(successHandler, window.backend.errorXhr, window.backend.API_URL.send, new FormData(formElement), sendForm);
+        window.backend.save(successHandler, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement), sendForm);
       };
 
       sendForm();
@@ -285,9 +309,7 @@
 
     var inputElements = document.querySelectorAll('input');
     for (var r = 0; r < inputElements.length; r++) {
-      if (inputElements[r].name !== NAME_ADDRESS_INPUT) {
-        inputElements[r].disabled = false;
-      }
+      inputElements[r].disabled = false;
 
       if (INPUT_FORM_NAME.indexOf(inputElements[r].name) !== -1) {
         inputElements[r].addEventListener('input', onInputForm);
