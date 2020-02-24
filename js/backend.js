@@ -11,23 +11,6 @@
   };
 
   var errorHandler = function (textMessage, sendRequest) {
-    if (!document.querySelector('.error')) {
-      var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-
-      errorElement.querySelector('.error__message').textContent = textMessage;
-
-      document.querySelector('main').appendChild(errorElement);
-      errorElement.addEventListener('click', onRepeatRequestClick);
-    }
-
-    var repeatRequest = function () {
-      document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
-      document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestEscKey);
-      errorElement.removeEventListener('click', onRepeatRequestClick);
-      document.querySelector('.error').remove();
-      sendRequest();
-    };
-
     var onRepeatRequestKey = function (evt) {
       if (evt.key === window.constants.enterKey) {
         repeatRequest();
@@ -48,6 +31,23 @@
       if (evt.target.classList.value !== 'error__message' && evt.target.classList.value !== 'error__button') {
         repeatRequest();
       }
+    };
+
+    if (!document.querySelector('.error')) {
+      var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+
+      errorElement.querySelector('.error__message').textContent = textMessage;
+
+      document.querySelector('main').appendChild(errorElement);
+    }
+    document.querySelector('.error').addEventListener('click', onRepeatRequestClick);
+
+    var repeatRequest = function () {
+      document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
+      document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestEscKey);
+      errorElement.removeEventListener('click', onRepeatRequestClick);
+      document.querySelector('.error').remove();
+      sendRequest();
     };
 
     document.querySelector('.error__button').addEventListener('click', onRepeatRequest);
