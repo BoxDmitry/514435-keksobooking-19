@@ -4,14 +4,9 @@
   var INPUT_FORM_NAME = ['title', 'price'];
   var CLASS_LIST_BUTTON_MAP = 'map__pin map__pin--main';
 
-  var mapPinMainElement = document.querySelector('.map__pin--main');
-
-  var DEFAULT_PIN_COORDINATES = {
-    top: mapPinMainElement.style.top,
-    left: mapPinMainElement.style.left
-  };
-
   var MAX_CAPACITY_ROOMS = 100;
+
+  var mapPinMainElement = document.querySelector('.map__pin--main');
 
   var MIN_PRICE_BUNGALO = 0;
   var MIN_PRICE_FLAT = 1000;
@@ -30,10 +25,8 @@
   var formPriceSelect = formElement.querySelector('#price');
   var formTimeInSelect = formElement.querySelector('#timein');
   var formTimeOutSelect = formElement.querySelector('#timeout');
-  var formAvaUser = formElement.querySelector('.ad-form-header__preview img');
 
   var sendFormButton = formElement.querySelector('.ad-form__submit');
-  var restetFormButton = formElement.querySelector('.ad-form__reset');
 
   var onCapacity = function () {
     var collRooms = formRoomsSelect.value;
@@ -245,14 +238,15 @@
           successElement.remove();
         };
 
-        var onHideSuccessClick = function (event) {
-          if (event.target.classList.value === 'success') {
+        var onHideSuccessClick = function (evt) {
+          if (evt.target.classList.value === 'success') {
             hideSuccess();
           }
         };
 
-        var onHideSuccessKeydown = function (event) {
-          if (event.key === window.constants.escKey) {
+        var onHideSuccessKeydown = function (evt) {
+          console.log('esc');
+          if (evt.key === window.constants.escKey) {
             hideSuccess();
           }
         };
@@ -265,8 +259,6 @@
         document.addEventListener('keydown', onHideSuccessKeydown);
 
         document.querySelector('main').appendChild(successElement);
-
-        disableForm();
       };
 
       var sendForm = function () {
@@ -277,91 +269,29 @@
     }
   };
 
-  var disableInputForm = function () {
-    var inputElementsArray = document.querySelectorAll('input');
-    for (var t = 0; t < inputElementsArray.length; t++) {
-      inputElementsArray[t].disabled = true;
+  var inputElementsArray = document.querySelectorAll('input');
+  for (var t = 0; t < inputElementsArray.length; t++) {
+    inputElementsArray[t].disabled = true;
+  }
+
+  var textareaElementsArray = document.querySelectorAll('textarea');
+  for (var y = 0; y < textareaElementsArray.length; y++) {
+    textareaElementsArray[y].disabled = true;
+  }
+
+  var buttonElementsArray = document.querySelectorAll('button');
+  for (var s = 0; s < buttonElementsArray.length; s++) {
+    if (buttonElementsArray[s].classList.value !== CLASS_LIST_BUTTON_MAP) {
+      buttonElementsArray[s].disabled = true;
     }
+  }
 
-    var textareaElementsArray = document.querySelectorAll('textarea');
-    for (var y = 0; y < textareaElementsArray.length; y++) {
-      textareaElementsArray[y].disabled = true;
-    }
+  var selectElementsArray = document.querySelectorAll('select');
+  for (var l = 0; l < selectElementsArray.length; l++) {
+    selectElementsArray[l].disabled = true;
+  }
 
-    var buttonElementsArray = document.querySelectorAll('button');
-    for (var s = 0; s < buttonElementsArray.length; s++) {
-      if (buttonElementsArray[s].classList.value !== CLASS_LIST_BUTTON_MAP) {
-        buttonElementsArray[s].disabled = true;
-      }
-    }
-
-    var selectElementsArray = document.querySelectorAll('select');
-    for (var l = 0; l < selectElementsArray.length; l++) {
-      selectElementsArray[l].disabled = true;
-    }
-  };
-
-  disableInputForm();
-
-  var disableForm = function () {
-    formElement.classList.add('ad-form--disabled');
-    window.map.element.classList.add('map--faded');
-
-    disableInputForm();
-
-    var mapPins = document.querySelectorAll('.map__pin');
-    for (var b = 0; b < mapPins.length; b++) {
-      if (mapPins[b] !== mapPinMainElement) {
-        mapPins[b].remove();
-      }
-    }
-
-    mapPinMainElement.style.top = DEFAULT_PIN_COORDINATES.top;
-    mapPinMainElement.style.left = DEFAULT_PIN_COORDINATES.left;
-
-    var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
-    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
-
-    formAddressInput.value = locationX + ', ' + locationY;
-
-    var inputElementsRemove = document.querySelectorAll('input');
-    for (var j = 0; j < inputElementsRemove.length; j++) {
-      if (inputElementsRemove[j].type === 'checkbox') {
-        inputElementsRemove[j].checked = '';
-      } else {
-        inputElementsRemove[j].value = '';
-      }
-      if (inputElementsRemove[j].parentNode.classList.contains('error--send')) {
-        inputElementsRemove[j].parentNode.classList.remove('error--send');
-        inputElementsRemove[j].parentNode.querySelector('.info--error').remove();
-      }
-    }
-
-    var textareaElementsRemove = document.querySelectorAll('textarea');
-    for (var c = 0; c < textareaElementsRemove.length; c++) {
-      textareaElementsRemove[c].value = '';
-    }
-
-    formRoomsSelect.value = '1';
-    formCapacitySelect.value = '1';
-
-    formTimeInSelect.value = '12:00';
-    formTimeOutSelect.value = '12:00';
-
-    formAvaUser.src = 'img/muffin-grey.svg';
-
-    formRoomsSelect.removeEventListener('input', onCapacity);
-    formTypeSelect.removeEventListener('input', onTypeChanged);
-    formTimeInSelect.removeEventListener('input', onTimeIn);
-    formTimeOutSelect.removeEventListener('input', onTimeOut);
-
-    sendFormButton.removeEventListener('click', onSendForm);
-    restetFormButton.removeEventListener('click', onResetForm);
-  };
-
-  var onResetForm = function () {
-    disableForm();
-  };
+  var renderPin = window.pin.render;
 
   var activateForm = function () {
     if (!formElement.classList.contains('ad-form--disabled')) {
@@ -370,7 +300,7 @@
 
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < window.data.length; i++) {
-      fragment.appendChild(window.pin.render(window.data[i], i));
+      fragment.appendChild(renderPin(window.data[i], i));
     }
     window.pin.pointsElement.appendChild(fragment);
 
@@ -414,7 +344,6 @@
     formAddressInput.value = locationX + ', ' + locationY;
 
     sendFormButton.addEventListener('click', onSendForm);
-    restetFormButton.addEventListener('click', onResetForm);
   };
 
   var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
