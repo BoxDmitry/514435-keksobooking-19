@@ -2,7 +2,7 @@
 
 (function () {
   var ESC_KEY = window.constants.escKey;
-  var LEFT_BUTTON_MOUSE_KEY = 0;
+  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapElement = document.querySelector('.map');

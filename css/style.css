@@ -614,6 +614,61 @@ fieldset {
   border-radius: 4px;
 }
 
+.ad-form__element.error--send input,
+.ad-form__element.error--send select {
+  border-color: #ff6547;
+  background-color: #ff00001f;
+}
+
+.ad-form__element.error--send label {
+  color: #ff6547;
+}
+
+.ad-form__element .info--error {
+  display: block;
+  margin-top: 2.5px;
+  position: absolute;
+  z-index: 2;
+  max-width: calc(100% - 20px);
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 8px 16px;
+  box-shadow: 2.5px 2.5px 5px 0 #ccc;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-left: -16px;
+  border: solid 1px #e8e8e8;
+  -webkit-transition: opacity .2s;
+       -o-transition: opacity .2s;
+          transition: opacity .2s;
+}
+
+.ad-form__element .info--error:active {
+  opacity: .8;
+}
+
+.ad-form__element .info--error:before,
+.ad-form__element .info--error:after {
+  position: absolute;
+  display: inline-block;
+  content: "";
+  top: 0;
+  margin-top: -28px;
+}
+
+.ad-form__element .info--error:after {
+  border: 12px solid transparent;
+  margin-top: -24px;
+  left: 25px;
+  border-bottom-color: #fff;
+}
+
+.ad-form__element .info--error:before {
+  border: 14px solid transparent;
+  left: 23px;
+  border-bottom-color: #e8e8e8;
+}
+
 .ad-form__element input:hover,
 .ad-form__element select:hover,
 .ad-form__element textarea:hover {
