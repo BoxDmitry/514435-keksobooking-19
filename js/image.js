@@ -28,8 +28,10 @@
       document.querySelector('.ad-form-header__upload').classList.remove('error--load');
       preview.src = 'img/muffin-grey.svg';
 
-      document.querySelector('.ad-form__field .info--error').removeEventListener('click', onHiddenError);
-      document.querySelector('.ad-form__field .info--error').remove();
+      if (document.querySelector('.ad-form__field .info--error')) {
+        document.querySelector('.ad-form__field .info--error').removeEventListener('click', onHiddenError);
+        document.querySelector('.ad-form__field .info--error').remove();
+      }
     }
 
     if (matches) {
@@ -58,11 +60,13 @@
     document.querySelector('.info--error').addEventListener('click', onHiddenError);
   });
 
-  fileChooser = document.querySelector('.ad-form__upload input[type=file]');
-  preview = document.querySelector('.ad-form__photo');
+  var filePhoto = document.querySelector('.ad-form__upload input[type=file]');
+  var previewPhoto = document.querySelector('.ad-form__photo');
 
-  fileChooser.addEventListener('change', function () {
-    var file = fileChooser.files[0];
+  filePhoto.addEventListener('change', function () {
+    var file = filePhoto.files[0];
+
+    console.log('load');
 
     if (!file) {
       return;
@@ -88,14 +92,14 @@
 
       reader.addEventListener('load', function () {
         var url = reader.result;
-        if (preview.querySelector('img')) {
-          preview.src = url;
+        if (previewPhoto.querySelector('img')) {
+          previewPhoto.src = url;
         } else {
           var img = document.createElement('img');
           img.src = url;
           img.style.maxWidth = '70px';
           img.style.maxHeight = '70px';
-          preview.appendChild(img);
+          previewPhoto.appendChild(img);
         }
       });
 
