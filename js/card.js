@@ -11,9 +11,11 @@
 
   var hideAdvertisement = function () {
     var card = document.querySelector('.map__card');
-    document.removeEventListener('keydown', onHideAdvertisement);
-    card.querySelector('.popup__close').removeEventListener('click', onButtonHideAdvertisement);
-    card.remove();
+    if (card) {
+      document.removeEventListener('keydown', onHideAdvertisement);
+      card.querySelector('.popup__close').removeEventListener('click', onButtonHideAdvertisement);
+      card.remove();
+    }
   };
 
   var onHideAdvertisement = function (evt) {
@@ -123,6 +125,7 @@
   };
 
   window.card = {
-    render: renderCard
+    render: renderCard,
+    hide: hideAdvertisement
   };
 })();
