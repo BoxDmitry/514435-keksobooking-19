@@ -355,6 +355,7 @@
 
 
     formAvaUser.src = 'img/muffin-grey.svg';
+    formElement.querySelector('.ad-form__photo-container img').remove();
 
     formRoomsSelect.removeEventListener('input', onCapacity);
     formTypeSelect.removeEventListener('input', onTypeChanged);
