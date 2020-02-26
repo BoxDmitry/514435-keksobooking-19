@@ -359,6 +359,13 @@
     restetFormButton.removeEventListener('click', onResetForm);
 
     window.filter.element.housingType.removeEventListener('input', onUpdateFilter);
+    window.filter.element.housingPrice.removeEventListener('input', onUpdateFilter);
+    window.filter.element.housingGuests.removeEventListener('input', onUpdateFilter);
+    window.filter.element.housingRooms.removeEventListener('input', onUpdateFilter);
+    var featureFilet = document.querySelectorAll('input.map__checkbox');
+    for (var d = 0; d < featureFilet.length; d++) {
+      featureFilet[d].removeEventListener('change', onUpdateFilter);
+    }
   };
 
   var onResetForm = function () {
@@ -376,6 +383,13 @@
 
     window.filter.update();
     window.filter.element.housingType.addEventListener('input', onUpdateFilter);
+    window.filter.element.housingPrice.addEventListener('input', onUpdateFilter);
+    window.filter.element.housingGuests.addEventListener('input', onUpdateFilter);
+    window.filter.element.housingRooms.addEventListener('input', onUpdateFilter);
+    var featureFiletArray = document.querySelectorAll('input.map__checkbox');
+    for (var m = 0; m < featureFiletArray.length; m++) {
+      featureFiletArray[m].addEventListener('change', onUpdateFilter);
+    }
 
     window.map.element.classList.remove('map--faded');
     formElement.classList.remove('ad-form--disabled');
