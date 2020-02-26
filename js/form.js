@@ -348,6 +348,12 @@
     formTimeInSelect.value = '12:00';
     formTimeOutSelect.value = '12:00';
 
+    window.filter.element.housingType.value = 'any';
+    window.filter.element.housingPrice.value = 'any';
+    window.filter.element.housingGuests.value = 'any';
+    window.filter.element.housingRooms.value = 'any';
+
+
     formAvaUser.src = 'img/muffin-grey.svg';
 
     formRoomsSelect.removeEventListener('input', onCapacity);
