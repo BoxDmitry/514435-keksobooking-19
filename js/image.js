@@ -66,8 +66,6 @@
   filePhoto.addEventListener('change', function () {
     var file = filePhoto.files[0];
 
-    console.log('load');
-
     if (!file) {
       return;
     }
