@@ -357,10 +357,16 @@
 
     sendFormButton.removeEventListener('click', onSendForm);
     restetFormButton.removeEventListener('click', onResetForm);
+
+    window.filter.element.housingType.removeEventListener('input', onUpdateFilter);
   };
 
   var onResetForm = function () {
     disableForm();
+  };
+
+  var onUpdateFilter = function () {
+    window.filter.update();
   };
 
   var activateForm = function () {
@@ -368,11 +374,8 @@
       return;
     }
 
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.length; i++) {
-      fragment.appendChild(window.pin.render(window.data[i], i));
-    }
-    window.pin.pointsElement.appendChild(fragment);
+    window.filter.update();
+    window.filter.element.housingType.addEventListener('input', onUpdateFilter);
 
     window.map.element.classList.remove('map--faded');
     formElement.classList.remove('ad-form--disabled');
