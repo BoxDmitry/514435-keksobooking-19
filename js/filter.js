@@ -57,8 +57,13 @@
       return featuresActive;
     };
 
-    if (advertisement.offer.features === getFeatures()) {
-      similarityScore += 5;
+    var features = getFeatures();
+
+
+    for (var d = 0; d < advertisement.offer.features.length; d++) {
+      if (features.indexOf(advertisement.offer.features[d]) !== -1) {
+        similarityScore += 1;
+      }
     }
 
     if (advertisement.offer.type === type) {

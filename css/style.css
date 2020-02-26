@@ -579,6 +579,74 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+.ad-form-header__upload.error--load .ad-form-header__drop-zone {
+  border-color: #ff6547;
+  color: #ff6547;
+}
+
+.ad-form-header__upload.error--load .ad-form-header__preview {
+  background-color: #ff6547;
+}
+
+.ad-form__field .info--error {
+  display: block;
+  margin-top: 2.5px;
+  position: absolute;
+  z-index: 2;
+  max-width: calc(100% - 20px);
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 8px 16px;
+  box-shadow: 2.5px 2.5px 5px 0 #ccc;
+  cursor: pointer;
+  margin-top: 90px;
+  margin-left: -80px;
+  border: solid 1px #e8e8e8;
+  -webkit-transition: opacity .2s;
+       -o-transition: opacity .2s;
+          transition: opacity .2s;
+}
+
+.ad-form__field .info--error:active {
+  opacity: .8;
+}
+
+.ad-form__field .info--error:before,
+.ad-form__field .info--error:after {
+  position: absolute;
+  display: inline-block;
+  content: "";
+  top: 0;
+  margin-top: -28px;
+}
+
+.ad-form__field .info--error:after {
+  border: 12px solid transparent;
+  margin-top: -24px;
+  left: 25px;
+  border-bottom-color: #fff;
+}
+
+.ad-form__field .info--error:before {
+  border: 14px solid transparent;
+  left: 23px;
+  border-bottom-color: #e8e8e8;
+}
+
+.ad-form__photo-container .ad-form__upload .info--error {
+  margin-top: 90px;
+  margin-left: 35px;
+}
+
+.ad-form__photo-container.error--load .ad-form__drop-zone {
+  border-color: #ff6547;
+  color: #ff6547;
+}
+
+.ad-form__photo-container.error--load .ad-form__photo {
+  background-color: #ff6547;
+}
+
 .ad-form__element {
   -ms-flex-preferred-size: 25%;
       flex-basis: 25%;
@@ -619,6 +687,8 @@ fieldset {
   border-color: #ff6547;
   background-color: #ff00001f;
 }
+
+.ad-form__element.error--send
 
 .ad-form__element.error--send label {
   color: #ff6547;
