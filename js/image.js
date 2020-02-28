@@ -40,10 +40,6 @@
       reader.addEventListener('load', function () {
         var url = reader.result;
         preview.src = url;
-
-        window.avatar = {
-          url: url
-        };
       });
 
       reader.readAsDataURL(file);

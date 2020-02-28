@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-  var INPUT_FORM_NAME = ['title', 'price'];
+  var INPUTS_FORM_NAME = ['title', 'price'];
+  var DISABLE_ELEMENTS = ['input', 'button', 'select', 'textarea'];
   var CLASS_LIST_BUTTON_MAP = 'map__pin map__pin--main';
 
   var mapPinMainElement = document.querySelector('.map__pin--main');
@@ -27,7 +28,7 @@
   var formRoomsSelect = formElement.querySelector('#room_number');
   var formCapacitySelect = formElement.querySelector('#capacity');
   var formTypeSelect = formElement.querySelector('#type');
-  var formPriceSelect = formElement.querySelector('#price');
+  var formPriceInput = formElement.querySelector('#price');
   var formTimeInSelect = formElement.querySelector('#timein');
   var formTimeOutSelect = formElement.querySelector('#timeout');
   var formAvaUser = formElement.querySelector('.ad-form-header__preview img');
@@ -35,7 +36,7 @@
   var sendFormButton = formElement.querySelector('.ad-form__submit');
   var restetFormButton = formElement.querySelector('.ad-form__reset');
 
-  var onCapacity = function () {
+  var onInputCapacity = function () {
     var collRooms = formRoomsSelect.value;
     var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
 
@@ -61,7 +62,7 @@
     }
   };
 
-  var onTypeChanged = function () {
+  var onInputTypeChanged = function () {
     var type = formTypeSelect.value;
 
     var minPrice = 0;
@@ -81,35 +82,27 @@
         break;
     }
 
-    formPriceSelect.min = minPrice;
-    formPriceSelect.placeholder = minPrice;
+    formPriceInput.min = minPrice;
+    formPriceInput.placeholder = minPrice;
 
     validateForm('price');
   };
 
-  var onTimeIn = function () {
+  var onInputTimeIn = function () {
     var timeIn = formTimeInSelect.value;
 
     var optionTimeArray = formTimeOutSelect.querySelectorAll('option');
     for (var y = 0; y < optionTimeArray.length; y++) {
-      if (timeIn !== optionTimeArray[y].value) {
-        optionTimeArray[y].selected = false;
-      } else {
-        optionTimeArray[y].selected = true;
-      }
+      optionTimeArray[y].selected = timeIn === optionTimeArray[y].value;
     }
   };
 
-  var onTimeOut = function () {
+  var onInputTimeOut = function () {
     var timeOut = formTimeOutSelect.value;
 
     var optionTimeArray = formTimeInSelect.querySelectorAll('option');
     for (var e = 0; e < optionTimeArray.length; e++) {
-      if (timeOut !== optionTimeArray[e].value) {
-        optionTimeArray[e].selected = false;
-      } else {
-        optionTimeArray[e].selected = true;
-      }
+      optionTimeArray[e].selected = timeOut === optionTimeArray[e].value;
     }
   };
 
@@ -184,7 +177,7 @@
       case 'price':
         var costValue = Number(document.querySelector('[name="price"]').value);
 
-        if (costValue === 0) {
+        if (costValue === 0 && formPriceInput.min > 0) {
           messageError = 'Необходимо указать цену за ночь';
           errorStat = true;
           break;
@@ -228,14 +221,14 @@
 
     var validateFormStat = true;
 
-    for (var r = 0; r < INPUT_FORM_NAME.length; r++) {
-      if (!validateForm(INPUT_FORM_NAME[r], true)) {
+    for (var r = 0; r < INPUTS_FORM_NAME.length; r++) {
+      if (!validateForm(INPUTS_FORM_NAME[r], true)) {
         validateFormStat = false;
       }
     }
 
     if (validateFormStat) {
-      var successHandler = function () {
+      var onSuccess = function () {
         var hideSuccess = function () {
           var successElement = document.querySelector('.success');
 
@@ -270,34 +263,25 @@
       };
 
       var sendForm = function () {
-        window.backend.save(successHandler, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement), sendForm);
+        window.backend.save(onSuccess, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement), sendForm);
       };
 
       sendForm();
     }
   };
 
-  var disableInputForm = function () {
-    var inputElementsArray = document.querySelectorAll('input');
-    for (var t = 0; t < inputElementsArray.length; t++) {
-      inputElementsArray[t].disabled = true;
-    }
-
-    var textareaElementsArray = document.querySelectorAll('textarea');
-    for (var y = 0; y < textareaElementsArray.length; y++) {
-      textareaElementsArray[y].disabled = true;
-    }
-
-    var buttonElementsArray = document.querySelectorAll('button');
-    for (var s = 0; s < buttonElementsArray.length; s++) {
-      if (buttonElementsArray[s].classList.value !== CLASS_LIST_BUTTON_MAP) {
-        buttonElementsArray[s].disabled = true;
+  var disableElements = function (elemtnt, stat) {
+    var elementsArray = document.querySelectorAll(elemtnt);
+    for (var t = 0; t < elementsArray.length; t++) {
+      if (elementsArray[t] !== mapPinMainElement) {
+        elementsArray[t].disabled = stat;
       }
     }
+  }
 
-    var selectElementsArray = document.querySelectorAll('select');
-    for (var l = 0; l < selectElementsArray.length; l++) {
-      selectElementsArray[l].disabled = true;
+  var disableInputForm = function () {
+    for (var t = 0; t < DISABLE_ELEMENTS.length; t++) {
+      disableElements(DISABLE_ELEMENTS[t], true);
     }
   };
 
@@ -315,14 +299,6 @@
         mapPins[b].remove();
       }
     }
-
-    mapPinMainElement.style.top = DEFAULT_PIN_COORDINATES.top;
-    mapPinMainElement.style.left = DEFAULT_PIN_COORDINATES.left;
-
-    var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
-    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
-
-    formAddressInput.value = locationX + ', ' + locationY;
 
     var inputElementsRemove = document.querySelectorAll('input');
     for (var j = 0; j < inputElementsRemove.length; j++) {
@@ -342,8 +318,20 @@
       textareaElementsRemove[c].value = '';
     }
 
+    mapPinMainElement.style.top = DEFAULT_PIN_COORDINATES.top;
+    mapPinMainElement.style.left = DEFAULT_PIN_COORDINATES.left;
+
+    var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
+    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
+
+    formAddressInput.value = locationX + ', ' + locationY;
+
+    formTypeSelect.value = 'flat';
     formRoomsSelect.value = '1';
     formCapacitySelect.value = '1';
+
+    formPriceInput.min = MIN_PRICE_FLAT;
+    formPriceInput.placeholder = MIN_PRICE_FLAT;
 
     formTimeInSelect.value = '12:00';
     formTimeOutSelect.value = '12:00';
@@ -355,12 +343,14 @@
 
 
     formAvaUser.src = 'img/muffin-grey.svg';
-    formElement.querySelector('.ad-form__photo-container img').remove();
+    if (formElement.querySelector('.ad-form__photo-container img')) {
+      formElement.querySelector('.ad-form__photo-container img').remove();
+    }
 
-    formRoomsSelect.removeEventListener('input', onCapacity);
-    formTypeSelect.removeEventListener('input', onTypeChanged);
-    formTimeInSelect.removeEventListener('input', onTimeIn);
-    formTimeOutSelect.removeEventListener('input', onTimeOut);
+    formRoomsSelect.removeEventListener('input', onInputCapacity);
+    formTypeSelect.removeEventListener('input', onInputTypeChanged);
+    formTimeInSelect.removeEventListener('input', onInputTimeIn);
+    formTimeOutSelect.removeEventListener('input', onInputTimeOut);
 
     sendFormButton.removeEventListener('click', onSendForm);
     restetFormButton.removeEventListener('click', onResetForm);
@@ -403,37 +393,24 @@
 
     var inputElements = document.querySelectorAll('input');
     for (var r = 0; r < inputElements.length; r++) {
-      inputElements[r].disabled = false;
-
-      if (INPUT_FORM_NAME.indexOf(inputElements[r].name) !== -1) {
+      if (INPUTS_FORM_NAME.indexOf(inputElements[r].name) !== -1) {
         inputElements[r].addEventListener('input', onInputForm);
         inputElements[r].addEventListener('blur', onBlurForm);
         inputElements[r].addEventListener('focus', onFocusForm);
       }
     }
 
-    var buttonElements = document.querySelectorAll('button');
-    for (var u = 0; u < buttonElements.length; u++) {
-      buttonElements[u].disabled = false;
-    }
-
-    var textareaElements = document.querySelectorAll('textarea');
-    for (var q = 0; q < textareaElements.length; q++) {
-      textareaElements[q].disabled = false;
-    }
-
-    var selectElements = document.querySelectorAll('select');
-    for (var e = 0; e < selectElements.length; e++) {
-      selectElements[e].disabled = false;
+    for (var t = 0; t < DISABLE_ELEMENTS.length; t++) {
+      disableElements(DISABLE_ELEMENTS[t], false);
     }
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
-    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2 + window.pin.HEIGHT_OFFSET;
+    var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT + window.pin.HEIGHT_OFFSET;
 
-    formRoomsSelect.addEventListener('input', onCapacity);
-    formTypeSelect.addEventListener('input', onTypeChanged);
-    formTimeInSelect.addEventListener('input', onTimeIn);
-    formTimeOutSelect.addEventListener('input', onTimeOut);
+    formRoomsSelect.addEventListener('input', onInputCapacity);
+    formTypeSelect.addEventListener('input', onInputTypeChanged);
+    formTimeInSelect.addEventListener('input', onInputTimeIn);
+    formTimeOutSelect.addEventListener('input', onInputTimeOut);
 
     formAddressInput.value = locationX + ', ' + locationY;
 
@@ -449,8 +426,8 @@
     }
   }
 
-  formPriceSelect.min = MIN_PRICE_FLAT;
-  formPriceSelect.placeholder = MIN_PRICE_FLAT;
+  formPriceInput.min = MIN_PRICE_FLAT;
+  formPriceInput.placeholder = MIN_PRICE_FLAT;
 
   var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
   var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;

@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_ADVERTISEMENTS = 5;
+
   var filterElement = {
     housingType: document.querySelector('#housing-type'),
     housingPrice: document.querySelector('#housing-price'),
@@ -10,7 +12,6 @@
 
   var mapPins = document.querySelector('.map__pins');
 
-  var MAX_ADVERTISEMENTS = 5;
   var advertisementsRender;
 
   var renderAdvertisementsPin = function (advertisement, id) {
@@ -24,13 +25,13 @@
     }
   };
 
-  var getRank = function (advertisement) {
-    var similarityScore = 0;
+  var getSimilarity = function (advertisement) {
+    var similarity = true;
 
     var type = filterElement.housingType.value;
-    var rooms = Number(filterElement.housingRooms.value);
+    var rooms = filterElement.housingRooms.value === 'any' ? 'any' : Number(filterElement.housingRooms.value);
     var price = filterElement.housingPrice.value;
-    var guests = Number(filterElement.housingGuests.value);
+    var guests = filterElement.housingGuests.value === 'any' ? 'any' : Number(filterElement.housingGuests.value);
 
     var getFeatures = function () {
       var featuresActive = [];
@@ -60,68 +61,76 @@
     var features = getFeatures();
 
 
-    for (var d = 0; d < advertisement.offer.features.length; d++) {
-      if (features.indexOf(advertisement.offer.features[d]) !== -1) {
-        similarityScore += 1;
+    if (features.length > 0) {
+      for (var d = 0; d < advertisement.offer.features.length; d++) {
+        if (features.indexOf(advertisement.offer.features[d]) === -1) {
+          similarity = false;
+        }
       }
     }
 
-    if (advertisement.offer.type === type) {
-      similarityScore += 4;
+    if (advertisement.offer.type !== type && type !== 'any') {
+      similarity = false;
     }
 
-    if (advertisement.offer.rooms === rooms) {
-      similarityScore += 3;
+    if (advertisement.offer.rooms !== rooms && rooms !== 'any') {
+      similarity = false;
     }
 
-    if (advertisement.offer.guests === guests) {
-      similarityScore += 2;
+    if (advertisement.offer.guests !== guests && guests !== 'any') {
+      similarity = false;
     }
 
     switch (price) {
       case 'middle':
-        if (advertisement.offer.price >= 10000 && advertisement.offer.price <= 50000) {
-          similarityScore += 1;
+        if (advertisement.offer.price < 10000 && advertisement.offer.price > 50000) {
+          similarity = false;
         }
         break;
       case 'low':
-        if (advertisement.offer.price <= 10000) {
-          similarityScore += 1;
+        if (advertisement.offer.price > 10000) {
+          similarity = false;
         }
         break;
       case 'high':
-        if (advertisement.offer.price >= 50000) {
-          similarityScore += 1;
+        if (advertisement.offer.price < 50000) {
+          similarity = false;
         }
         break;
     }
 
-    return similarityScore;
+    return similarity;
   };
 
   var updateAdvertisementsPin = function () {
-    render(advertisementsRender.slice().
-      sort(function (left, right) {
-        var rankDiff = getRank(right) - getRank(left);
-        if (rankDiff === 0) {
-          rankDiff = -1;
-        }
-        return rankDiff;
-      }));
-  };
+    var newRenderAdvertisements = [];
 
-  var filter = function () {
-    window.card.hide();
-
-    var mapPin = document.querySelectorAll('.map__pin');
-    for (var b = 0; b < mapPin.length; b++) {
-      if (mapPin[b] !== document.querySelector('.map__pin--main')) {
-        mapPin[b].remove();
+    for (var n = 0; n < advertisementsRender.length; n++) {
+      if (getSimilarity(advertisementsRender[n])) {
+        newRenderAdvertisements[newRenderAdvertisements.length] = advertisementsRender[n];
       }
     }
 
-    advertisementsRender = window.data;
-    updateAdvertisementsPin();
+    render(newRenderAdvertisements);
+  };
+
+  var filter = function () {
+    var applyFilter = window.debounce(function () {
+      window.card.hide();
+
+      var mapPin = document.querySelectorAll('.map__pin');
+      var mapPinMainElement = document.querySelector('.map__pin--main');
+      for (var b = 0; b < mapPin.length; b++) {
+        if (mapPin[b] !== mapPinMainElement) {
+          mapPin[b].remove();
+        }
+      }
+
+      advertisementsRender = window.data;
+      updateAdvertisementsPin();
+    });
+
+    applyFilter();
   };
 
   window.filter = {

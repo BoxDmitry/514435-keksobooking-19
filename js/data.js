@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var successHandler = function (advertisements) {
+  var onSuccess = function (advertisements) {
     window.data = advertisements;
   };
 
   var sendRequest = function () {
-    window.backend.load(successHandler, window.backend.errorXhr, window.backend.API_URL.data, sendRequest);
+    window.backend.load(onSuccess, window.backend.errorXhr, window.backend.API_URL.data, sendRequest);
   };
 
   sendRequest();

@@ -10,7 +10,7 @@
     save: 'https://js.dump.academy/keksobooking/'
   };
 
-  var errorHandler = function (textMessage, sendRequest) {
+  var onError = function (textMessage, sendRequest) {
     var onRepeatRequestKey = function (evt) {
       if (evt.key === window.constants.enterKey) {
         repeatRequest();
@@ -40,18 +40,21 @@
 
       document.querySelector('main').appendChild(errorElement);
     }
-    document.querySelector('.error').addEventListener('click', onRepeatRequestClick);
 
     var repeatRequest = function () {
-      document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
-      document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestEscKey);
-      errorElement.removeEventListener('click', onRepeatRequestClick);
-      document.querySelector('.error').remove();
+      if (document.querySelector('.error')) {
+        document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
+        document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestKey);
+        document.querySelector('.error').removeEventListener('click', onRepeatRequestClick);
+        document.removeEventListener('keydown', onRepeatRequestEscKey);
+        document.querySelector('.error').remove();
+      }
       sendRequest();
     };
 
     document.querySelector('.error__button').addEventListener('click', onRepeatRequest);
     document.querySelector('.error__button').addEventListener('keydown', onRepeatRequestKey);
+    document.querySelector('.error').addEventListener('click', onRepeatRequestClick);
     document.addEventListener('keydown', onRepeatRequestEscKey);
   };
 
@@ -85,7 +88,7 @@
   window.backend = {
     load: load,
     save: save,
-    errorXhr: errorHandler,
+    errorXhr: onError,
     API_URL: API_URL
   };
 })();

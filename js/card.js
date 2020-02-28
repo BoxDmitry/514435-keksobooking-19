@@ -3,11 +3,11 @@
 (function () {
   var ESC_KEY = window.constants.escKey;
 
-  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
   var WIDTH_IMG = 45;
   var HEIGHT_IMG = 40;
   var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
+
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   var hideAdvertisement = function () {
     var card = document.querySelector('.map__card');
@@ -50,29 +50,19 @@
         break;
     }
 
-    if (advertisement.offer.title.length > 0) {
-      cardElement.querySelector('.popup__title').textContent = advertisement.offer.title;
-    } else {
-      cardElement.querySelector('.popup__title').remove();
+    var checkElement = function (element, elementAdvertisement, textElement) {
+      if (elementAdvertisement > 0) {
+        cardElement.querySelector(element).textContent = textElement;
+      } else {
+        cardElement.querySelector(element).remove();
+      }
     }
 
-    if (advertisement.offer.address.length > 0) {
-      cardElement.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-    } else {
-      cardElement.querySelector('.popup__text--address').remove();
-    }
-
-    if (advertisement.offer.price.length > 0) {
-      cardElement.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-    } else {
-      cardElement.querySelector('.popup__text--price').remove();
-    }
-
-    if (advertisementType.length > 0) {
-      cardElement.querySelector('.popup__type').textContent = advertisementType;
-    } else {
-      cardElement.querySelector('.popup__type').remove();
-    }
+    checkElement('.popup__title', advertisement.offer.title.length, advertisement.offer.title);
+    checkElement('.popup__text--address', advertisement.offer.address.length, advertisement.offer.address);
+    checkElement('.popup__text--price', advertisement.offer.price, advertisement.offer.price + '₽/ночь');
+    checkElement('.popup__type', advertisementType.length, advertisementType);
+    checkElement('.popup__type', advertisement.offer.description.length, advertisement.offer.description);
 
     if (advertisement.offer.rooms.length > 0 & advertisement.offer.guests.length > 0) {
       var popupText = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
@@ -111,12 +101,6 @@
       photosElementFeature.height = HEIGHT_IMG;
 
       cardElement.querySelector('.popup__photos').appendChild(photosElementFeature);
-    }
-
-    if (advertisement.offer.description.length > 0) {
-      cardElement.querySelector('.popup__description').textContent = advertisement.offer.description;
-    } else {
-      cardElement.querySelector('.popup__description').remove();
     }
 
     cardElement.querySelector('.popup__avatar').src = advertisement.author.avatar;

@@ -15,6 +15,6 @@
     leftBittonMouseKey: LEFT_BUTTON_MOUSE_KEY,
     mapWidth: MAP_WIDTH,
     mapHeightMin: MAP_HEIGHT_MIN,
-    mapHeightMax: MAP_HEIGHT_MAX
+    mapHeightMax: MAP_HEIGHT_MAX,
   };
 })();

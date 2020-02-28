@@ -4,11 +4,15 @@
   var ESC_KEY = window.constants.escKey;
   var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
 
+  var PIN_WIDTH = 62;
+  var PIN_HEIGHT = 62;
+  var PIN_HEIGHT_OFFSET = 22;
+
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapElement = document.querySelector('.map');
   var mapPointsElement = document.querySelector('.map__pins');
 
-  var onHiddenAdvertisement = function (evt) {
+  var onHiddenAdvertisementEsc = function (evt) {
     if (evt.key === ESC_KEY) {
       hiddenAdvertisement();
     }
@@ -20,16 +24,12 @@
     }
   };
 
-  var PIN_WIDTH = 62;
-  var PIN_HEIGHT = 62;
-  var PIN_HEIGHT_OFFSET = 22;
-
   var PIN_LEFT_OFFSET = pinTemplate.offsetWidth / 2;
   var PIN_TOP_OFFSET = pinTemplate.offsetHeight;
 
   var hiddenAdvertisement = function () {
     var card = document.querySelector('.map__card');
-    document.removeEventListener('keydown', onHiddenAdvertisement);
+    document.removeEventListener('keydown', onHiddenAdvertisementEsc);
     card.querySelector('.popup__close').removeEventListener('click', onButtonHiddenAdvertisement);
     card.remove();
   };
@@ -44,7 +44,7 @@
     }
     var card = document.createDocumentFragment();
     card.appendChild(renderCard(window.data[idAdvertisement]));
-    document.addEventListener('keydown', onHiddenAdvertisement);
+    document.addEventListener('keydown', onHiddenAdvertisementEsc);
     mapElement.appendChild(card);
   };
 
