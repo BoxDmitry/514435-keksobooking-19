@@ -56,7 +56,7 @@
       } else {
         cardElement.querySelector(element).remove();
       }
-    }
+    };
 
     checkElement('.popup__title', advertisement.offer.title.length, advertisement.offer.title);
     checkElement('.popup__text--address', advertisement.offer.address.length, advertisement.offer.address);

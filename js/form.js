@@ -3,7 +3,6 @@
 (function () {
   var INPUTS_FORM_NAME = ['title', 'price'];
   var DISABLE_ELEMENTS = ['input', 'button', 'select', 'textarea'];
-  var CLASS_LIST_BUTTON_MAP = 'map__pin map__pin--main';
 
   var mapPinMainElement = document.querySelector('.map__pin--main');
 
@@ -277,7 +276,7 @@
         elementsArray[t].disabled = stat;
       }
     }
-  }
+  };
 
   var disableInputForm = function () {
     for (var t = 0; t < DISABLE_ELEMENTS.length; t++) {

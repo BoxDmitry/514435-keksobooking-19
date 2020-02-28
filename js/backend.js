@@ -10,7 +10,7 @@
     save: 'https://js.dump.academy/keksobooking/'
   };
 
-  var onError = function (textMessage, sendRequest) {
+  var onErrorExprot = function (textMessage, sendRequest) {
     var onRepeatRequestKey = function (evt) {
       if (evt.key === window.constants.enterKey) {
         repeatRequest();
@@ -88,7 +88,7 @@
   window.backend = {
     load: load,
     save: save,
-    errorXhr: onError,
+    errorXhr: onErrorExprot,
     API_URL: API_URL
   };
 })();
