@@ -10,7 +10,7 @@
     save: 'https://js.dump.academy/keksobooking/'
   };
 
-  var onErrorExprot = function (textMessage, sendRequest) {
+  var onErrorExprot = function (textMessage) {
     var onRepeatRequestKey = function (evt) {
       if (evt.key === window.constants.enterKey) {
         repeatRequest();
@@ -49,7 +49,6 @@
         document.removeEventListener('keydown', onRepeatRequestEscKey);
         document.querySelector('.error').remove();
       }
-      sendRequest();
     };
 
     document.querySelector('.error__button').addEventListener('click', onRepeatRequest);
@@ -58,7 +57,7 @@
     document.addEventListener('keydown', onRepeatRequestEscKey);
   };
 
-  var getXhr = function (dataType, onLoad, onError, URL, DATA, metod, sendRequest) {
+  var getXhr = function (dataType, onLoad, onError, URL, DATA, metod) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = dataType;
 
@@ -66,23 +65,23 @@
       if (xhr.status === StatusCode.OK) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText, sendRequest);
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения', sendRequest);
+      onError('Произошла ошибка соединения');
     });
 
     xhr.open(metod, URL);
     xhr.send(DATA);
   };
 
-  var save = function (onLoad, onError, URL, DATA, sendRequest) {
-    getXhr('', onLoad, onError, URL, DATA, 'POST', sendRequest);
+  var save = function (onLoad, onError, URL, DATA) {
+    getXhr('', onLoad, onError, URL, DATA, 'POST');
   };
 
-  var load = function (onLoad, onError, URL, sendRequest) {
-    getXhr('json', onLoad, onError, URL, '', 'GET', sendRequest);
+  var load = function (onLoad, onError, URL) {
+    getXhr('json', onLoad, onError, URL, '', 'GET');
   };
 
   window.backend = {

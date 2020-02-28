@@ -261,11 +261,7 @@
         disableForm();
       };
 
-      var sendForm = function () {
-        window.backend.save(onSuccess, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement), sendForm);
-      };
-
-      sendForm();
+      window.backend.save(onSuccess, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement));
     }
   };
 
