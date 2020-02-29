@@ -2,23 +2,27 @@
 
 (function () {
   var StatusCode = {
-    OK: 200
+    OK: 200,
   };
 
   var API_URL = {
     data: 'https://js.dump.academy/keksobooking/data',
-    save: 'https://js.dump.academy/keksobooking/'
+    save: 'https://js.dump.academy/keksobooking/',
   };
 
   var onErrorExprot = function (textMessage) {
     var onRepeatRequestKey = function (evt) {
-      if (evt.key === window.constants.enterKey) {
+      var keyButton = evt.key;
+
+      if (keyButton === window.constants.enterKey) {
         repeatRequest();
       }
     };
 
     var onRepeatRequestEscKey = function (evt) {
-      if (evt.key === window.constants.escKey) {
+      var keyButton = evt.key;
+
+      if (keyButton === window.constants.escKey) {
         repeatRequest();
       }
     };
@@ -28,32 +32,32 @@
     };
 
     var onRepeatRequestClick = function (evt) {
-      if (evt.target.classList.value === 'error') {
+      var clickElement = evt.target;
+
+      if (clickElement.classList.value === 'error') {
         repeatRequest();
       }
     };
 
-    if (!document.querySelector('.error')) {
-      var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+    var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
-      errorElement.querySelector('.error__message').textContent = textMessage;
+    errorElement.querySelector('.error__message').textContent = textMessage;
+    document.querySelector('main').appendChild(errorElement);
 
-      document.querySelector('main').appendChild(errorElement);
-    }
+    var errorWindow = document.querySelector('.error');
+    var buttonError = errorWindow.querySelector('.error__button');
 
     var repeatRequest = function () {
-      if (document.querySelector('.error')) {
-        document.querySelector('.error__button').removeEventListener('click', onRepeatRequest);
-        document.querySelector('.error__button').removeEventListener('keydown', onRepeatRequestKey);
-        document.querySelector('.error').removeEventListener('click', onRepeatRequestClick);
-        document.removeEventListener('keydown', onRepeatRequestEscKey);
-        document.querySelector('.error').remove();
-      }
+      buttonError.removeEventListener('click', onRepeatRequest);
+      buttonError.removeEventListener('keydown', onRepeatRequestKey);
+      errorWindow.removeEventListener('click', onRepeatRequestClick);
+      document.removeEventListener('keydown', onRepeatRequestEscKey);
+      errorWindow.remove();
     };
 
-    document.querySelector('.error__button').addEventListener('click', onRepeatRequest);
-    document.querySelector('.error__button').addEventListener('keydown', onRepeatRequestKey);
-    document.querySelector('.error').addEventListener('click', onRepeatRequestClick);
+    buttonError.addEventListener('click', onRepeatRequest);
+    buttonError.addEventListener('keydown', onRepeatRequestKey);
+    errorWindow.addEventListener('click', onRepeatRequestClick);
     document.addEventListener('keydown', onRepeatRequestEscKey);
   };
 

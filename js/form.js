@@ -8,7 +8,7 @@
 
   var DEFAULT_PIN_COORDINATES = {
     top: mapPinMainElement.style.top,
-    left: mapPinMainElement.style.left
+    left: mapPinMainElement.style.left,
   };
 
   var MAX_CAPACITY_ROOMS = 100;
@@ -42,7 +42,9 @@
     for (var r = 0; r < optionCapacityArray.length; r++) {
       if (collRooms < MAX_CAPACITY_ROOMS) {
         var elementCapacityMin = optionCapacityArray[r];
-        if (collRooms < elementCapacityMin.value || Number(elementCapacityMin.value) === 0) {
+        var capacityMinValue = Number(elementCapacityMin.value);
+
+        if (collRooms < capacityMinValue || capacityMinValue === 0) {
           elementCapacityMin.disabled = true;
           elementCapacityMin.selected = false;
         } else {
@@ -50,7 +52,9 @@
         }
       } else {
         var elementCapacityMax = optionCapacityArray[r];
-        if (Number(elementCapacityMax.value) === 0) {
+        var capacityMaxValue = Number(elementCapacityMax.value);
+
+        if (capacityMaxValue === 0) {
           elementCapacityMax.disabled = false;
           elementCapacityMax.selected = true;
         } else {
@@ -62,11 +66,11 @@
   };
 
   var onInputTypeChanged = function () {
-    var type = formTypeSelect.value;
+    var roomType = formTypeSelect.value;
 
     var minPrice = 0;
 
-    switch (type) {
+    switch (roomType) {
       case 'bungalo':
         minPrice = MIN_PRICE_BUNGALO;
         break;
@@ -89,8 +93,8 @@
 
   var onInputTimeIn = function () {
     var timeIn = formTimeInSelect.value;
-
     var optionTimeArray = formTimeOutSelect.querySelectorAll('option');
+
     for (var y = 0; y < optionTimeArray.length; y++) {
       optionTimeArray[y].selected = timeIn === optionTimeArray[y].value;
     }
@@ -98,40 +102,53 @@
 
   var onInputTimeOut = function () {
     var timeOut = formTimeOutSelect.value;
-
     var optionTimeArray = formTimeInSelect.querySelectorAll('option');
+
     for (var e = 0; e < optionTimeArray.length; e++) {
       optionTimeArray[e].selected = timeOut === optionTimeArray[e].value;
     }
   };
 
   var onInputForm = function (evt) {
-    validateForm(evt.target.name, false);
+    var inputElement = evt.target;
+
+    validateForm(inputElement.name, false);
   };
 
   var onFocusForm = function (evt) {
-    evt.target.parentNode.classList.remove('error--send');
+    var parentFormElement = evt.target.parentNode;
+
+    parentFormElement.classList.remove('error--send');
   };
 
   var onBlurForm = function (evt) {
-    validateForm(evt.target.name, true);
+    var inputElement = evt.target;
+
+    validateForm(inputElement.name, true);
   };
 
-  var getValueLengthElement = function (element) {
-    return document.querySelector(element).value.length;
+  var getValueLengthElement = function (selector) {
+    var matchedElement = document.querySelector(selector);
+
+    return matchedElement.value.length;
   };
 
   var onHiddenErrorMessage = function (evt) {
-    evt.target.removeEventListener('click', onHiddenErrorMessage);
-    evt.target.remove();
+    var errorElement = evt.target;
+
+    errorElement.removeEventListener('click', onHiddenErrorMessage);
+    errorElement.remove();
   };
 
-  var removeErrorElement = function (nameElement) {
-    var element = document.querySelector(nameElement);
-    element.parentNode.classList.remove('error--send');
-    if (element.parentNode.querySelector('.info--error')) {
-      element.parentNode.querySelector('.info--error').removeEventListener('click', onHiddenErrorMessage);
-      element.parentNode.querySelector('.info--error').remove();
+  var removeErrorElement = function (selector) {
+    var errorElement = document.querySelector(selector);
+    var errorElementParent = errorElement.parentNode;
+
+    errorElementParent.classList.remove('error--send');
+
+    if (errorElementParent.querySelector('.info--error')) {
+      errorElementParent.querySelector('.info--error').removeEventListener('click', onHiddenErrorMessage);
+      errorElementParent.querySelector('.info--error').remove();
     }
   };
 
@@ -174,9 +191,11 @@
 
         break;
       case 'price':
-        var costValue = Number(document.querySelector('[name="price"]').value);
+        var inputValue = document.querySelector('[name="price"]').value;
 
-        if (costValue === 0 && formPriceInput.min > 0) {
+        var costValue = Number(inputValue);
+
+        if (!inputValue || (costValue === 0 && formPriceInput.min > 0)) {
           messageError = 'Необходимо указать цену за ночь';
           errorStat = true;
           break;
@@ -430,6 +449,6 @@
   formAddressInput.value = locationX + ', ' + locationY;
 
   window.form = {
-    activate: activateForm
+    activate: activateForm,
   };
 })();

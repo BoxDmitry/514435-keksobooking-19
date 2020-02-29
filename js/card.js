@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEY = window.constants.escKey;
-
   var WIDTH_IMG = 45;
   var HEIGHT_IMG = 40;
   var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
@@ -11,21 +9,27 @@
 
   var hideAdvertisement = function () {
     var card = document.querySelector('.map__card');
+
     if (card) {
       document.removeEventListener('keydown', onHideAdvertisement);
       card.querySelector('.popup__close').removeEventListener('click', onButtonHideAdvertisement);
       card.remove();
+      document.querySelector('button.map__pin--active').classList.remove('map__pin--active');
     }
   };
 
   var onHideAdvertisement = function (evt) {
-    if (evt.key === ESC_KEY) {
+    var keyButton = evt.key;
+
+    if (keyButton === window.constants.escKey) {
       hideAdvertisement();
     }
   };
 
   var onButtonHideAdvertisement = function (evt) {
-    if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
+    var button = evt.button;
+
+    if (button === LEFT_BUTTON_MOUSE_KEY) {
       hideAdvertisement();
     }
   };
@@ -58,24 +62,25 @@
       }
     };
 
+    var checkTwoParametersElement = function (element, elementAdvertisementOne, elementAdvertisementTwo, textElement) {
+      if (elementAdvertisementOne > 0 & elementAdvertisementTwo > 0) {
+        cardElement.querySelector(element).textContent = textElement;
+      } else {
+        cardElement.querySelector(element).remove();
+      }
+    };
+
     checkElement('.popup__title', advertisement.offer.title.length, advertisement.offer.title);
     checkElement('.popup__text--address', advertisement.offer.address.length, advertisement.offer.address);
     checkElement('.popup__text--price', advertisement.offer.price, advertisement.offer.price + '₽/ночь');
     checkElement('.popup__type', advertisementType.length, advertisementType);
     checkElement('.popup__type', advertisement.offer.description.length, advertisement.offer.description);
 
-    if (advertisement.offer.rooms.length > 0 & advertisement.offer.guests.length > 0) {
-      var popupText = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
-      cardElement.querySelector('.popup__text--capacity').textContent = popupText;
-    } else {
-      cardElement.querySelector('.popup__text--capacity').remove();
-    }
+    var textCapacity = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
+    checkTwoParametersElement('.popup__text--capacity', advertisement.offer.rooms, advertisement.offer.guests, textCapacity);
 
-    if (advertisement.offer.checkin.length > 0 & advertisement.offer.checkout.length > 0) {
-      cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
-    } else {
-      cardElement.querySelector('.popup__text--time').remove();
-    }
+    var textTime = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
+    checkTwoParametersElement('.popup__text--time', advertisement.offer.checkin.length, advertisement.offer.checkout.length, textTime);
 
     cardElement.querySelector('.popup__close').addEventListener('click', onButtonHideAdvertisement);
 
@@ -95,6 +100,7 @@
       var photos = advertisement.offer.photos[l];
 
       var photosElementFeature = document.createElement('img');
+
       photosElementFeature.classList.add('popup__photo');
       photosElementFeature.src = photos;
       photosElementFeature.width = WIDTH_IMG;

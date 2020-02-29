@@ -8,11 +8,12 @@
   var mapPinMainElement = document.querySelector('.map__pin--main');
 
   var onActivatedForm = function (evt) {
+    var button = evt.button;
     evt.preventDefault();
 
     var startCoords = {
       x: evt.clientX,
-      y: evt.clientY
+      y: evt.clientY,
     };
 
     var onMouseMove = function (moveEvt) {
@@ -20,12 +21,12 @@
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        y: startCoords.y - moveEvt.clientY,
       };
 
       startCoords = {
         x: moveEvt.clientX,
-        y: moveEvt.clientY
+        y: moveEvt.clientY,
       };
 
       var newTop = mapPinMainElement.offsetTop - shift.y;
@@ -54,7 +55,7 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
-    if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
+    if (button === LEFT_BUTTON_MOUSE_KEY) {
       window.form.activate();
     }
   };
@@ -62,13 +63,15 @@
   mapPinMainElement.addEventListener('mousedown', onActivatedForm);
 
   mapPinMainElement.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
+    var keyButton = evt.key;
+
+    if (keyButton === ENTER_KEY) {
       window.form.activate();
     }
   });
 
   window.map = {
     pinMainElement: mapPinMainElement,
-    element: mapElement
+    element: mapElement,
   };
 })();

@@ -13,13 +13,17 @@
   var mapPointsElement = document.querySelector('.map__pins');
 
   var onHiddenAdvertisementEsc = function (evt) {
-    if (evt.key === ESC_KEY) {
+    var keyButton = evt.key;
+
+    if (keyButton === ESC_KEY) {
       hiddenAdvertisement();
     }
   };
 
   var onButtonHiddenAdvertisement = function (evt) {
-    if (evt.button === LEFT_BUTTON_MOUSE_KEY) {
+    var button = evt.button;
+
+    if (button === LEFT_BUTTON_MOUSE_KEY) {
       hiddenAdvertisement();
     }
   };
@@ -29,20 +33,37 @@
 
   var hiddenAdvertisement = function () {
     var card = document.querySelector('.map__card');
+
     document.removeEventListener('keydown', onHiddenAdvertisementEsc);
     card.querySelector('.popup__close').removeEventListener('click', onButtonHiddenAdvertisement);
     card.remove();
+    document.querySelector('button.map__pin--active').classList.remove('map__pin--active');
   };
 
   var renderCard = window.card.render;
 
   var onShowAdvertisement = function (evt) {
-    var idAdvertisement = evt.toElement.dataset.advertisement;
+    var buttonAvtive = document.querySelector('button.map__pin--active');
+    var buttonClickElement = evt.target;
+    var buttonClickElementParent = buttonClickElement.parentNode;
+
+    if (buttonAvtive) {
+      buttonAvtive.classList.remove('map__pin--active');
+    }
+
+    if (buttonClickElement.tagName === 'BUTTON') {
+      buttonClickElement.classList.add('map__pin--active');
+    } else {
+      buttonClickElementParent.classList.add('map__pin--active');
+    }
 
     if (document.querySelector('.map__card')) {
       document.querySelector('.map__card').remove();
     }
+
+    var idAdvertisement = evt.toElement.dataset.advertisement;
     var card = document.createDocumentFragment();
+
     card.appendChild(renderCard(window.data[idAdvertisement]));
     document.addEventListener('keydown', onHiddenAdvertisementEsc);
     mapElement.appendChild(card);
@@ -67,6 +88,6 @@
     HEIGHT: PIN_HEIGHT,
     HEIGHT_OFFSET: PIN_HEIGHT_OFFSET,
     render: renderPin,
-    pointsElement: mapPointsElement
+    pointsElement: mapPointsElement,
   };
 })();

@@ -26,8 +26,6 @@
   };
 
   var getSimilarity = function (advertisement) {
-    var similarity = true;
-
     var type = filterElement.housingType.value;
     var rooms = filterElement.housingRooms.value === 'any' ? 'any' : Number(filterElement.housingRooms.value);
     var price = filterElement.housingPrice.value;
@@ -64,42 +62,42 @@
     if (features.length > 0) {
       for (var d = 0; d < advertisement.offer.features.length; d++) {
         if (features.indexOf(advertisement.offer.features[d]) === -1) {
-          similarity = false;
+          return false;
         }
       }
     }
 
     if (advertisement.offer.type !== type && type !== 'any') {
-      similarity = false;
+      return false;
     }
 
     if (advertisement.offer.rooms !== rooms && rooms !== 'any') {
-      similarity = false;
+      return false;
     }
 
     if (advertisement.offer.guests !== guests && guests !== 'any') {
-      similarity = false;
+      return false;
     }
 
     switch (price) {
       case 'middle':
         if (advertisement.offer.price < 10000 && advertisement.offer.price > 50000) {
-          similarity = false;
+          return false;
         }
         break;
       case 'low':
         if (advertisement.offer.price > 10000) {
-          similarity = false;
+          return false;
         }
         break;
       case 'high':
         if (advertisement.offer.price < 50000) {
-          similarity = false;
+          return false;
         }
         break;
     }
 
-    return similarity;
+    return true;
   };
 
   var updateAdvertisementsPin = function () {
@@ -116,10 +114,11 @@
 
   var filter = function () {
     var applyFilter = window.debounce(function () {
-      window.card.hide();
-
       var mapPin = document.querySelectorAll('.map__pin');
       var mapPinMainElement = document.querySelector('.map__pin--main');
+
+      window.card.hide();
+
       for (var b = 0; b < mapPin.length; b++) {
         if (mapPin[b] !== mapPinMainElement) {
           mapPin[b].remove();
