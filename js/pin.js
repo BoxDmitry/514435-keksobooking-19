@@ -9,6 +9,10 @@
   var PIN_HEIGHT_OFFSET = 22;
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+  var pinLeftOffset = pinTemplate.offsetWidth / 2;
+  var pinTopOffset = pinTemplate.offsetHeight;
+
   var mapElement = document.querySelector('.map');
   var mapPointsElement = document.querySelector('.map__pins');
 
@@ -28,16 +32,16 @@
     }
   };
 
-  var PIN_LEFT_OFFSET = pinTemplate.offsetWidth / 2;
-  var PIN_TOP_OFFSET = pinTemplate.offsetHeight;
-
   var hiddenAdvertisement = function () {
+    var mapPinActivate = document.querySelector('button.map__pin--active');
+    var mapPinActivateClassList = mapPinActivate.classList;
+
     var card = document.querySelector('.map__card');
 
     document.removeEventListener('keydown', onHiddenAdvertisementEsc);
     card.querySelector('.popup__close').removeEventListener('click', onButtonHiddenAdvertisement);
     card.remove();
-    document.querySelector('button.map__pin--active').classList.remove('map__pin--active');
+    mapPinActivateClassList.remove('map__pin--active');
   };
 
   var renderCard = window.card.render;
@@ -72,8 +76,8 @@
   var renderPin = function (advertisement, id) {
     var pinElement = pinTemplate.cloneNode(true);
 
-    pinElement.style.left = advertisement.location.x + PIN_LEFT_OFFSET + 'px';
-    pinElement.style.top = advertisement.location.y + PIN_TOP_OFFSET + 'px';
+    pinElement.style.left = advertisement.location.x + pinLeftOffset + 'px';
+    pinElement.style.top = advertisement.location.y + pinTopOffset + 'px';
     pinElement.querySelector('img').src = advertisement.author.avatar;
     pinElement.querySelector('img').alt = advertisement.offer.title;
     pinElement.dataset.advertisement = id;

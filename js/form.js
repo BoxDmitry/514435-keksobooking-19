@@ -2,14 +2,9 @@
 
 (function () {
   var INPUTS_FORM_NAME = ['title', 'price'];
-  var DISABLE_ELEMENTS = ['input', 'button', 'select', 'textarea'];
+  var DISABLE_ELEMENT_TAGS = ['input', 'button', 'select', 'textarea'];
 
-  var mapPinMainElement = document.querySelector('.map__pin--main');
-
-  var DEFAULT_PIN_COORDINATES = {
-    top: mapPinMainElement.style.top,
-    left: mapPinMainElement.style.left,
-  };
+  var ESC_KEY = window.constants.escKey;
 
   var MAX_CAPACITY_ROOMS = 100;
 
@@ -21,7 +16,15 @@
   var MAX_LENGTH_TITLE = 100;
   var MIN_LENGTH_TITLE = 30;
 
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+
+  var defailtPinCoordinates = {
+    top: mapPinMainElement.style.top,
+    left: mapPinMainElement.style.left,
+  };
+
   var formElement = document.querySelector('.ad-form');
+  var formElementClassList = formElement.classList;
 
   var formAddressInput = formElement.querySelector('#address');
   var formRoomsSelect = formElement.querySelector('#room_number');
@@ -34,6 +37,14 @@
 
   var sendFormButton = formElement.querySelector('.ad-form__submit');
   var restetFormButton = formElement.querySelector('.ad-form__reset');
+
+  var housingType = window.filter.element.housingType;
+  var housingPrice = window.filter.element.housingPrice;
+  var housingGuests = window.filter.element.housingGuests;
+  var housingRooms = window.filter.element.housingRooms;
+
+  var mapElement = window.map.element;
+  var mapElementClassList = mapElement.classList;
 
   var onInputCapacity = function () {
     var collRooms = formRoomsSelect.value;
@@ -117,8 +128,9 @@
 
   var onFocusForm = function (evt) {
     var parentFormElement = evt.target.parentNode;
+    var parentFormElementClassList = parentFormElement.classList;
 
-    parentFormElement.classList.remove('error--send');
+    parentFormElementClassList.remove('error--send');
   };
 
   var onBlurForm = function (evt) {
@@ -129,8 +141,10 @@
 
   var getValueLengthElement = function (selector) {
     var matchedElement = document.querySelector(selector);
+    var matchedElementValue = matchedElement.value;
+    var matchedElementValueLength = matchedElementValue.length;
 
-    return matchedElement.value.length;
+    return matchedElementValueLength;
   };
 
   var onHiddenErrorMessage = function (evt) {
@@ -154,19 +168,21 @@
 
   var addErrorClassElement = function (nameElement, messageError, errorShowStat) {
     var element = document.querySelector(nameElement);
-    var messageErrorElement;
+    var elementParentNode = element.parentNode;
+    var elementParentNodeClassList = elementParentNode.classList;
+    var infoError = elementParentNode.querySelector('.info--error');
+
     if (errorShowStat) {
       element.parentNode.classList.add('error--send');
     }
-    if (!element.parentNode.querySelector('.info--error')) {
-      messageErrorElement = document.createElement('span');
-      messageErrorElement.classList.add('info--error');
+    if (infoError) {
+      var messageErrorElement = document.createElement('span');
+      elementParentNodeClassList.add('info--error');
       messageErrorElement.textContent = messageError;
-      element.parentNode.appendChild(messageErrorElement);
-      element.parentNode.querySelector('.info--error').addEventListener('click', onHiddenErrorMessage);
+      elementParentNode.appendChild(messageErrorElement);
+      infoError.addEventListener('click', onHiddenErrorMessage);
     } else {
-      messageErrorElement = element.parentNode.querySelector('.info--error');
-      messageErrorElement.textContent = messageError;
+      infoError.textContent = messageError;
     }
   };
 
@@ -184,14 +200,18 @@
           break;
         }
 
+        var minLenghtTitleText = 'Заголовок объявлния должен быть не кроче ' + MIN_LENGTH_TITLE + ' символов';
+        var maxLenghtTitleText = 'Заголовок объявления должен быть не длинее ' + MAX_LENGTH_TITLE + ' симмволов';
+
         if (titleValue < MIN_LENGTH_TITLE || titleValue > MAX_LENGTH_TITLE) {
-          messageError = titleValue < MIN_LENGTH_TITLE ? 'Заголовок объявлния должен быть не кроче ' + MIN_LENGTH_TITLE + ' символов' : 'Заголовок объявления должен быть не длинее ' + MAX_LENGTH_TITLE + ' симмволов';
+          messageError = titleValue < MIN_LENGTH_TITLE ? minLenghtTitleText : maxLenghtTitleText;
           errorStat = true;
         }
 
         break;
       case 'price':
-        var inputValue = document.querySelector('[name="price"]').value;
+        var inputElement = document.querySelector('[name="price"]');
+        var inputValue = inputElement.value;
 
         var costValue = Number(inputValue);
 
@@ -201,7 +221,10 @@
           break;
         }
 
-        if (costValue < Number(document.querySelector('[name="price"]').min) || costValue > Number(document.querySelector('[name="price"]').max)) {
+        var minPriceText = 'Цена за ночь в' + typeChanged + ' не может быть меньше ' + inputElement.min + ' руб';
+        var maxPriceText = 'Цена за ночь в' + typeChanged + ' не может быть больше ' + inputElement.max + ' руб';
+
+        if (costValue < Number(inputElement.min) || costValue > Number(inputElement.max)) {
           var typeChanged;
 
           switch (formTypeSelect.value) {
@@ -219,7 +242,7 @@
               break;
           }
 
-          messageError = costValue < Number(document.querySelector('[name="price"]').min) ? 'Цена за ночь в' + typeChanged + ' не может быть меньше ' + document.querySelector('[name="price"]').min + ' руб' : 'Цена за ночь в' + typeChanged + ' не может быть больше ' + document.querySelector('[name="price"]').max + ' руб';
+          messageError = costValue < Number(inputElement.min) ? minPriceText : maxPriceText;
           errorStat = true;
         }
         break;
@@ -234,43 +257,51 @@
     }
   };
 
+  var onHideSuccessClick = function (evt) {
+    var targetElement = evt.target;
+    var targetElementClassList = event.target.classList;
+    var targetElementClassListValue = targetElementClassList.value;
+
+    if (targetElementClassListValue === 'success') {
+      hideSuccess();
+    }
+  };
+
+  var onHideSuccessKeydown = function (evt) {
+    var key = evt.key;
+
+    if (key === ESC_KEY) {
+      hideSuccess();
+    }
+  };
+
+  var hideSuccess = function () {
+    var successElement = document.querySelector('.success');
+
+    successElement.removeEventListener('click', onHideSuccessClick);
+    document.removeEventListener('keydown', onHideSuccessKeydown);
+
+    successElement.remove();
+  };
+
   var onSendForm = function (evt) {
     evt.preventDefault();
 
     var validateFormStat = true;
 
-    for (var r = 0; r < INPUTS_FORM_NAME.length; r++) {
-      if (!validateForm(INPUTS_FORM_NAME[r], true)) {
+    INPUTS_FORM_NAME.forEach(function (inputName) {
+      if (!validateForm(inputName, true)) {
         validateFormStat = false;
       }
-    }
+    });
 
     if (validateFormStat) {
       var onSuccess = function () {
-        var hideSuccess = function () {
-          var successElement = document.querySelector('.success');
-
-          successElement.removeEventListener('click', onHideSuccessClick);
-          document.removeEventListener('keydown', onHideSuccessKeydown);
-
-          successElement.remove();
-        };
-
-        var onHideSuccessClick = function (event) {
-          if (event.target.classList.value === 'success') {
-            hideSuccess();
-          }
-        };
-
-        var onHideSuccessKeydown = function (event) {
-          if (event.key === window.constants.escKey) {
-            hideSuccess();
-          }
-        };
-
         var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 
-        successElement.querySelector('.success__message').innerHTML = 'Ваше объявление<br>успешно размещено!';
+        var textSuccess = 'Ваше объявление<br>успешно размещено!';
+
+        successElement.querySelector('.success__message').innerHTML = textSuccess;
 
         successElement.addEventListener('click', onHideSuccessClick);
         document.addEventListener('keydown', onHideSuccessKeydown);
@@ -280,60 +311,70 @@
         disableForm();
       };
 
-      window.backend.save(onSuccess, window.backend.errorXhr, window.backend.API_URL.save, new FormData(formElement));
+      window.backend.save(onSuccess, window.backend.API_URL.save, new FormData(formElement));
     }
   };
 
-  var disableElements = function (elemtnt, stat) {
-    var elementsArray = document.querySelectorAll(elemtnt);
-    for (var t = 0; t < elementsArray.length; t++) {
-      if (elementsArray[t] !== mapPinMainElement) {
-        elementsArray[t].disabled = stat;
+  var disableElements = function (selector, stat) {
+    var inputElements = document.querySelectorAll(selector);
+
+    inputElements.forEach(function (element) {
+      if (element !== mapPinMainElement) {
+        element.disabled = stat;
       }
-    }
+    });
   };
 
   var disableInputForm = function () {
-    for (var t = 0; t < DISABLE_ELEMENTS.length; t++) {
-      disableElements(DISABLE_ELEMENTS[t], true);
-    }
+    DISABLE_ELEMENT_TAGS.forEach(function (disableElement) {
+      disableElements(disableElement, true);
+    });
   };
 
   disableInputForm();
 
   var disableForm = function () {
-    formElement.classList.add('ad-form--disabled');
-    window.map.element.classList.add('map--faded');
+    formElementClassList.add('ad-form--disabled');
+    mapElementClassList.add('map--faded');
 
     disableInputForm();
 
     var mapPins = document.querySelectorAll('.map__pin');
-    for (var b = 0; b < mapPins.length; b++) {
-      if (mapPins[b] !== mapPinMainElement) {
+
+    mapPins.forEach(function (pin) {
+      if (pin !== mapPinMainElement) {
         mapPins[b].remove();
       }
-    }
+    });
 
     var inputElementsRemove = document.querySelectorAll('input');
-    for (var j = 0; j < inputElementsRemove.length; j++) {
-      if (inputElementsRemove[j].type === 'checkbox') {
-        inputElementsRemove[j].checked = '';
+
+    inputElementsRemove.forEach(function (input) {
+      var inputParent = input.parentNode;
+      var inputParentClassList = inputParent.classList;
+
+      var infoError = inputParent.querySelector('.info--error');
+
+      if (input.type === 'checkbox') {
+        input.checked = '';
       } else {
-        inputElementsRemove[j].value = '';
+        input.value = '';
       }
-      if (inputElementsRemove[j].parentNode.classList.contains('error--send')) {
-        inputElementsRemove[j].parentNode.classList.remove('error--send');
-        inputElementsRemove[j].parentNode.querySelector('.info--error').remove();
+
+      if (inputParentClassList.contains('error--send')) {
+        inputParentClassList.remove('error--send');
+        infoError.remove();
       }
-    }
+    });
 
     var textareaElementsRemove = document.querySelectorAll('textarea');
-    for (var c = 0; c < textareaElementsRemove.length; c++) {
-      textareaElementsRemove[c].value = '';
-    }
 
-    mapPinMainElement.style.top = DEFAULT_PIN_COORDINATES.top;
-    mapPinMainElement.style.left = DEFAULT_PIN_COORDINATES.left;
+    textareaElementsRemove.forEach(function (textarea) {
+      textarea.value = '';
+    });
+
+    mapPinMainElement.style.top = defailtPinCoordinates.top;
+    mapPinMainElement.style.left = defailtPinCoordinates.left;
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
     var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
@@ -350,15 +391,17 @@
     formTimeInSelect.value = '12:00';
     formTimeOutSelect.value = '12:00';
 
-    window.filter.element.housingType.value = 'any';
-    window.filter.element.housingPrice.value = 'any';
-    window.filter.element.housingGuests.value = 'any';
-    window.filter.element.housingRooms.value = 'any';
+    housingType.value = 'any';
+    housingPrice.value = 'any';
+    housingGuests.value = 'any';
+    housingRooms.value = 'any';
 
 
     formAvaUser.src = 'img/muffin-grey.svg';
-    if (formElement.querySelector('.ad-form__photo-container img')) {
-      formElement.querySelector('.ad-form__photo-container img').remove();
+    var photoContainerImg = formElement.querySelector('.ad-form__photo-container img');
+
+    if (photoContainerImg) {
+      photoContainerImg.remove();
     }
 
     formRoomsSelect.removeEventListener('input', onInputCapacity);
@@ -369,14 +412,16 @@
     sendFormButton.removeEventListener('click', onSendForm);
     restetFormButton.removeEventListener('click', onResetForm);
 
-    window.filter.element.housingType.removeEventListener('input', onUpdateFilter);
-    window.filter.element.housingPrice.removeEventListener('input', onUpdateFilter);
-    window.filter.element.housingGuests.removeEventListener('input', onUpdateFilter);
-    window.filter.element.housingRooms.removeEventListener('input', onUpdateFilter);
-    var featureFilet = document.querySelectorAll('input.map__checkbox');
-    for (var d = 0; d < featureFilet.length; d++) {
-      featureFilet[d].removeEventListener('change', onUpdateFilter);
-    }
+    housingType.removeEventListener('input', onUpdateFilter);
+    housingPrice.removeEventListener('input', onUpdateFilter);
+    housingGuests.removeEventListener('input', onUpdateFilter);
+    housingRooms.removeEventListener('input', onUpdateFilter);
+
+    var featureFilets = document.querySelectorAll('input.map__checkbox');
+
+    featureFilets.forEach(function (feature) {
+      feature.removeEventListener('change', onUpdateFilter);
+    });
   };
 
   var onResetForm = function () {
@@ -388,35 +433,36 @@
   };
 
   var activateForm = function () {
-    if (!formElement.classList.contains('ad-form--disabled')) {
-      return;
-    }
+    if (!formElementClassList.contains('ad-form--disabled')) { return; }
 
     window.filter.update();
-    window.filter.element.housingType.addEventListener('input', onUpdateFilter);
-    window.filter.element.housingPrice.addEventListener('input', onUpdateFilter);
-    window.filter.element.housingGuests.addEventListener('input', onUpdateFilter);
-    window.filter.element.housingRooms.addEventListener('input', onUpdateFilter);
-    var featureFiletArray = document.querySelectorAll('input.map__checkbox');
-    for (var m = 0; m < featureFiletArray.length; m++) {
-      featureFiletArray[m].addEventListener('change', onUpdateFilter);
-    }
+    housingType.addEventListener('input', onUpdateFilter);
+    housingPrice.addEventListener('input', onUpdateFilter);
+    housingGuests.addEventListener('input', onUpdateFilter);
+    housingRooms.addEventListener('input', onUpdateFilter);
 
-    window.map.element.classList.remove('map--faded');
-    formElement.classList.remove('ad-form--disabled');
+    var featureFiletArray = document.querySelectorAll('input.map__checkbox');
+
+    featureFiletArray.forEach(function (feature) {
+      feature.addEventListener('change', onUpdateFilter);
+    });
+
+    mapElement.classList.remove('map--faded');
+    formElementClassList.remove('ad-form--disabled');
 
     var inputElements = document.querySelectorAll('input');
-    for (var r = 0; r < inputElements.length; r++) {
-      if (INPUTS_FORM_NAME.indexOf(inputElements[r].name) !== -1) {
-        inputElements[r].addEventListener('input', onInputForm);
-        inputElements[r].addEventListener('blur', onBlurForm);
-        inputElements[r].addEventListener('focus', onFocusForm);
-      }
-    }
 
-    for (var t = 0; t < DISABLE_ELEMENTS.length; t++) {
-      disableElements(DISABLE_ELEMENTS[t], false);
-    }
+    inputElements.forEach(function (input) {
+      if (INPUTS_FORM_NAME.indexOf(input.name) !== -1) {
+        input.addEventListener('input', onInputForm);
+        input.addEventListener('blur', onBlurForm);
+        input.addEventListener('focus', onFocusForm);
+      }
+    });
+
+    DISABLE_ELEMENT_TAGS.forEach(function (element_tag) {
+      disableElements(element_tag, false);
+    });
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
     var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT + window.pin.HEIGHT_OFFSET;
@@ -433,12 +479,13 @@
   };
 
   var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
-  for (var r = 0; r < optionCapacityArray.length; r++) {
-    if (optionCapacityArray[r].value !== formRoomsSelect.value) {
-      optionCapacityArray[r].disabled = true;
-      optionCapacityArray[r].selected = false;
+
+  optionCapacityArray.forEach(function (option) {
+    if (option.value !== formRoomsSelect.value) {
+      option.disabled = true;
+      option.selected = false;
     }
-  }
+  })
 
   formPriceInput.min = MIN_PRICE_FLAT;
   formPriceInput.placeholder = MIN_PRICE_FLAT;

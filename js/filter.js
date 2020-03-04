@@ -10,6 +10,17 @@
     housingGuests: document.querySelector('#housing-guests'),
   };
 
+  var MaxAndMinPrice = {
+    min: {
+      middle: 10000,
+      low: 10000,
+    },
+    max: {
+      middle: 50000,
+      high: 50000,
+    },
+  };
+
   var mapPins = document.querySelector('.map__pins');
 
   var advertisementsRender;
@@ -26,7 +37,7 @@
   };
 
   var getSimilarity = function (advertisement) {
-    var type = filterElement.housingType.value;
+    var type = filterElement.housingType.value === 'any' ? 'any' : filterElement.housingType.value;
     var rooms = filterElement.housingRooms.value === 'any' ? 'any' : Number(filterElement.housingRooms.value);
     var price = filterElement.housingPrice.value;
     var guests = filterElement.housingGuests.value === 'any' ? 'any' : Number(filterElement.housingGuests.value);
@@ -81,17 +92,17 @@
 
     switch (price) {
       case 'middle':
-        if (advertisement.offer.price < 10000 && advertisement.offer.price > 50000) {
+        if (advertisement.offer.price < MaxAndMinPrice.min.middle && advertisement.offer.price > MaxAndMinPrice.max.middle) {
           return false;
         }
         break;
       case 'low':
-        if (advertisement.offer.price > 10000) {
+        if (advertisement.offer.price > MaxAndMinPrice.min.low) {
           return false;
         }
         break;
       case 'high':
-        if (advertisement.offer.price < 50000) {
+        if (advertisement.offer.price < MaxAndMinPrice.max.high) {
           return false;
         }
         break;
@@ -103,11 +114,11 @@
   var updateAdvertisementsPin = function () {
     var newRenderAdvertisements = [];
 
-    for (var n = 0; n < advertisementsRender.length; n++) {
-      if (getSimilarity(advertisementsRender[n])) {
-        newRenderAdvertisements[newRenderAdvertisements.length] = advertisementsRender[n];
+    advertisementsRender.forEach(function (advertisement) {
+      if (getSimilarity(advertisement)) {
+        newRenderAdvertisements[newRenderAdvertisements.length] = advertisement;
       }
-    }
+    });
 
     render(newRenderAdvertisements);
   };
