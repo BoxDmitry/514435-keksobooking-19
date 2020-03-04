@@ -6,7 +6,7 @@
   };
 
   var API_URL = {
-    data: 'https://js.dump.academy/keksobooking/data',
+    data: 'https://js.dump.academy/keksobooking/dat',
     save: 'https://js.dump.academy/keksobooking/',
   };
 
@@ -15,7 +15,7 @@
     TEXT: 'text',
   };
 
-   var onRepeatRequestKey = function (evt) {
+  var onRepeatRequestKey = function (evt) {
     var keyButton = evt.key;
 
     if (keyButton === window.constants.enterKey) {
@@ -44,6 +44,9 @@
   };
 
   var repeatRequest = function () {
+    var errorWindow = document.querySelector('.error');
+    var buttonError = errorWindow.querySelector('.error__button');
+
     buttonError.removeEventListener('click', onRepeatRequest);
     buttonError.removeEventListener('keydown', onRepeatRequestKey);
     errorWindow.removeEventListener('click', onRepeatRequestClick);
@@ -66,7 +69,7 @@
     document.addEventListener('keydown', onRepeatRequestEscKey);
   };
 
-  var getXhr = function (dataType, onLoad, onError, URL, DATA, metod) {
+  var getXhr = function (dataType, onLoad, URL, DATA, metod) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = dataType;
@@ -87,11 +90,11 @@
   };
 
   var save = function (onLoad, URL, DATA) {
-    getXhr(responseType.TEXT, onLoad, onError, URL, DATA, 'POST');
+    getXhr(responseType.TEXT, onLoad, URL, DATA, 'POST');
   };
 
   var load = function (onLoad, URL) {
-    getXhr(responseType.JSON, onLoad, onError, URL, '', 'GET');
+    getXhr(responseType.JSON, onLoad, URL, '', 'GET');
   };
 
   window.backend = {

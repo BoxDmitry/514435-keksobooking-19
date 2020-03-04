@@ -17,7 +17,9 @@
   };
 
   var checkFile = function (file) {
-    if (!file) { return false; }
+    if (!file) {
+      return false;
+    }
 
     var fileName = file.name.toLowerCase();
 
@@ -26,7 +28,7 @@
     });
 
     return matches;
-  }
+  };
 
   fileChooser.addEventListener('change', function () {
     var file = fileChooser.files[0];
