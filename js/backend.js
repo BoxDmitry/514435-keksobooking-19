@@ -6,7 +6,7 @@
   };
 
   var API_URL = {
-    data: 'https://js.dump.academy/keksobooking/dat',
+    data: 'https://js.dump.academy/keksobooking/data',
     save: 'https://js.dump.academy/keksobooking/',
   };
 
