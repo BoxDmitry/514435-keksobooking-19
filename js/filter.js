@@ -116,7 +116,8 @@
 
     advertisementsRender.forEach(function (advertisement) {
       if (getSimilarity(advertisement)) {
-        newRenderAdvertisements[newRenderAdvertisements.length] = advertisement;
+        var indexArraynewRenderAdvertisements = newRenderAdvertisements.length;
+        newRenderAdvertisements[indexArraynewRenderAdvertisements] = advertisement;
       }
     });
 
