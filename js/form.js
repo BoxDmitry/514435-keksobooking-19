@@ -18,6 +18,8 @@
 
   var mapPinMainElement = document.querySelector('.map__pin--main');
 
+  var mainElement = document.querySelector('main');
+
   var defaultPinCoordinates = {
     top: mapPinMainElement.style.top,
     left: mapPinMainElement.style.left,
@@ -200,11 +202,11 @@
           break;
         }
 
-        var minLenghtTitleText = 'Заголовок объявлния должен быть не кроче ' + MIN_LENGTH_TITLE + ' символов';
-        var maxLenghtTitleText = 'Заголовок объявления должен быть не длинее ' + MAX_LENGTH_TITLE + ' симмволов';
+        var minLengthTitleText = 'Заголовок объявлния должен быть не кроче ' + MIN_LENGTH_TITLE + ' символов';
+        var maxLengthTitleText = 'Заголовок объявления должен быть не длинее ' + MAX_LENGTH_TITLE + ' симмволов';
 
         if (titleValue < MIN_LENGTH_TITLE || titleValue > MAX_LENGTH_TITLE) {
-          messageError = titleValue < MIN_LENGTH_TITLE ? minLenghtTitleText : maxLenghtTitleText;
+          messageError = titleValue < MIN_LENGTH_TITLE ? minLengthTitleText : maxLengthTitleText;
           errorStat = true;
         }
 
@@ -220,9 +222,6 @@
           errorStat = true;
           break;
         }
-
-        var minPriceText = 'Цена за ночь в' + typeChanged + ' не может быть меньше ' + inputElement.min + ' руб';
-        var maxPriceText = 'Цена за ночь в' + typeChanged + ' не может быть больше ' + inputElement.max + ' руб';
 
         if (costValue < Number(inputElement.min) || costValue > Number(inputElement.max)) {
           var typeChanged;
@@ -242,6 +241,9 @@
               break;
           }
 
+          var minPriceText = 'Цена за ночь в' + typeChanged + ' не может быть меньше ' + inputElement.min + ' руб';
+          var maxPriceText = 'Цена за ночь в' + typeChanged + ' не может быть больше ' + inputElement.max + ' руб';
+
           messageError = costValue < Number(inputElement.min) ? minPriceText : maxPriceText;
           errorStat = true;
         }
@@ -251,10 +253,10 @@
     if (errorStat) {
       addErrorClassElement('[name="' + type + '"]', messageError, errorShowStat);
       return false;
-    } else {
-      removeErrorElement('[name="' + type + '"]');
-      return true;
     }
+
+    removeErrorElement('[name="' + type + '"]');
+    return true;
   };
 
   var onHideSuccessClick = function (evt) {
@@ -289,24 +291,27 @@
 
     var validateFormStat = true;
 
-    INPUTS_FORM_NAME.forEach(function (inputName) {
-      if (!validateForm(inputName, true)) {
+    INPUTS_FORM_NAME
+      .filter(function (inputName) {
+        return !validateForm(inputName, true);
+      })
+      .forEach(function () {
         validateFormStat = false;
-      }
-    });
+      });
 
     if (validateFormStat) {
       var onSuccess = function () {
         var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+        var successMessageElement = successElement.querySelector('.success__message');
 
-        var textSuccess = 'Ваше объявление<br>успешно размещено!';
+        var successTextHTML = 'Ваше объявление<br>успешно размещено!';
 
-        successElement.querySelector('.success__message').innerHTML = textSuccess;
+        successMessageElement.innerHTML = successTextHTML;
 
         successElement.addEventListener('click', onHideSuccessClick);
         document.addEventListener('keydown', onHideSuccessKeydown);
 
-        document.querySelector('main').appendChild(successElement);
+        mainElement.appendChild(successElement);
 
         disableForm();
       };
@@ -316,13 +321,15 @@
   };
 
   var disableElements = function (selector, stat) {
-    var inputElements = document.querySelectorAll(selector);
+    var inputElements = Array.from(document.querySelectorAll(selector));
 
-    inputElements.forEach(function (element) {
-      if (element !== mapPinMainElement) {
+    inputElements
+      .filter(function (element) {
+        return element !== mapPinMainElement;
+      })
+      .forEach(function (element) {
         element.disabled = stat;
-      }
-    });
+      });
   };
 
   var disableInputForm = function () {
@@ -339,15 +346,17 @@
 
     disableInputForm();
 
-    var mapPins = document.querySelectorAll('.map__pin');
+    var mapPins = Array.from(document.querySelectorAll('.map__pin'));
 
-    mapPins.forEach(function (pin) {
-      if (pin !== mapPinMainElement) {
+    mapPins
+      .filter(function (pin) {
+        return pin !== mapPinMainElement;
+      })
+      .forEach(function (pin) {
         pin.remove();
-      }
-    });
+      });
 
-    var inputElementsRemove = document.querySelectorAll('input');
+    var inputElementsRemove = Array.from(document.querySelectorAll('input'));
 
     inputElementsRemove.forEach(function (input) {
       var inputParent = input.parentNode;
@@ -356,7 +365,7 @@
       var infoError = inputParent.querySelector('.info--error');
 
       if (input.type === 'checkbox') {
-        input.checked = '';
+        input.checked = false;
       } else {
         input.value = '';
       }
@@ -367,7 +376,7 @@
       }
     });
 
-    var textareaElementsRemove = document.querySelectorAll('textarea');
+    var textareaElementsRemove = Array.from(document.querySelectorAll('textarea'));
 
     textareaElementsRemove.forEach(function (textarea) {
       textarea.value = '';
@@ -452,15 +461,17 @@
     mapElement.classList.remove('map--faded');
     formElementClassList.remove('ad-form--disabled');
 
-    var inputElements = document.querySelectorAll('input');
+    var inputElements = Array.from(document.querySelectorAll('input'));
 
-    inputElements.forEach(function (input) {
-      if (INPUTS_FORM_NAME.indexOf(input.name) !== -1) {
+    inputElements
+      .filter(function (input) {
+        return INPUTS_FORM_NAME.indexOf(input.name) !== -1;
+      })
+      .forEach(function (input) {
         input.addEventListener('input', onInputForm);
         input.addEventListener('blur', onBlurForm);
         input.addEventListener('focus', onFocusForm);
-      }
-    });
+      });
 
     DISABLE_ELEMENT_TAGS.forEach(function (elementTag) {
       disableElements(elementTag, false);
@@ -480,14 +491,16 @@
     restetFormButton.addEventListener('click', onResetForm);
   };
 
-  var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
+  var optionCapacityArray = Array.from(formCapacitySelect.querySelectorAll('option'));
 
-  optionCapacityArray.forEach(function (option) {
-    if (option.value !== formRoomsSelect.value) {
+  optionCapacityArray
+    .filter(function (option) {
+      return option.value !== formRoomsSelect.value;
+    })
+    .forEach(function (option) {
       option.disabled = true;
       option.selected = false;
-    }
-  });
+    });
 
   formPriceInput.min = MIN_PRICE_FLAT;
   formPriceInput.placeholder = MIN_PRICE_FLAT;

@@ -11,10 +11,19 @@
     var card = document.querySelector('.map__card');
 
     if (card) {
+      var clossButtonElement = card.querySelector('.popup__close');
+      var pinActiveElement = document.querySelector('button.map__pin--active');
+
       document.removeEventListener('keydown', onHideAdvertisement);
-      card.querySelector('.popup__close').removeEventListener('click', onButtonHideAdvertisement);
+      clossButtonElement.removeEventListener('click', onButtonHideAdvertisement);
+
       card.remove();
-      document.querySelector('button.map__pin--active').classList.remove('map__pin--active');
+
+      if (pinActiveElement) {
+        var pinActiveElementClassList = pinActiveElement.classList;
+
+        pinActiveElementClassList.remove('map__pin--active');
+      }
     }
   };
 

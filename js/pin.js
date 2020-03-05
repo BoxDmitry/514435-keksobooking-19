@@ -37,9 +37,10 @@
     var mapPinActivateClassList = mapPinActivate.classList;
 
     var card = document.querySelector('.map__card');
+    var clossButtonCard = card.querySelector('.popup__close');
 
     document.removeEventListener('keydown', onHiddenAdvertisementEsc);
-    card.querySelector('.popup__close').removeEventListener('click', onButtonHiddenAdvertisement);
+    clossButtonCard.removeEventListener('click', onButtonHiddenAdvertisement);
     card.remove();
     mapPinActivateClassList.remove('map__pin--active');
   };
@@ -47,22 +48,25 @@
   var renderCard = window.card.render;
 
   var onShowAdvertisement = function (evt) {
-    var buttonAvtive = document.querySelector('button.map__pin--active');
+    var buttonAсtive = document.querySelector('button.map__pin--active');
     var buttonClickElement = evt.target;
-    var buttonClickElementParent = buttonClickElement.parentNode;
+    var buttonClickElementTagName = buttonClickElement.tagName;
+    var buttonClickElementClassList = buttonClickElement.classList;
 
-    if (buttonAvtive) {
-      buttonAvtive.classList.remove('map__pin--active');
+    var cardElement = document.querySelector('.map__card');
+
+    if (buttonAсtive) {
+      buttonAсtive.classList.remove('map__pin--active');
     }
 
-    if (buttonClickElement.tagName === 'BUTTON') {
-      buttonClickElement.classList.add('map__pin--active');
+    if (buttonClickElementTagName === 'BUTTON') {
+      buttonClickElementClassList.add('map__pin--active');
     } else {
-      buttonClickElementParent.classList.add('map__pin--active');
+      buttonClickElementClassList.add('map__pin--active');
     }
 
-    if (document.querySelector('.map__card')) {
-      document.querySelector('.map__card').remove();
+    if (cardElement) {
+      cardElement.remove();
     }
 
     var idAdvertisement = evt.toElement.dataset.advertisement;
@@ -75,13 +79,14 @@
 
   var renderPin = function (advertisement, id) {
     var pinElement = pinTemplate.cloneNode(true);
+    var pinImageElement = pinElement.querySelector('img');
 
     pinElement.style.left = advertisement.location.x + pinLeftOffset + 'px';
     pinElement.style.top = advertisement.location.y + pinTopOffset + 'px';
-    pinElement.querySelector('img').src = advertisement.author.avatar;
-    pinElement.querySelector('img').alt = advertisement.offer.title;
+    pinImageElement.src = advertisement.author.avatar;
+    pinImageElement.alt = advertisement.offer.title;
     pinElement.dataset.advertisement = id;
-    pinElement.querySelector('img').dataset.advertisement = id;
+    pinImageElement.dataset.advertisement = id;
     pinElement.addEventListener('click', onShowAdvertisement);
 
     return pinElement;

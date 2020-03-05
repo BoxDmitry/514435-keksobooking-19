@@ -6,6 +6,7 @@
 
   var mapElement = document.querySelector('.map');
   var mapPinMainElement = document.querySelector('.map__pin--main');
+  var addressElement = document.querySelector('.ad-form #address');
 
   var onActivatedForm = function (evt) {
     var button = evt.button;
@@ -42,7 +43,7 @@
       var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
       var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT + window.pin.HEIGHT_OFFSET;
 
-      document.querySelector('.ad-form #address').value = locationX + ', ' + locationY;
+      addressElement.value = locationX + ', ' + locationY;
     };
 
     var onMouseUp = function (upEvt) {

@@ -46,22 +46,22 @@
       var featuresActive = [];
 
       if (document.querySelector('#filter-wifi').checked) {
-        featuresActive[featuresActive.length] = 'wifi';
+        featuresActive.push('wifi');
       }
       if (document.querySelector('#filter-dishwasher').checked) {
-        featuresActive[featuresActive.length] = 'dishwasher';
+        featuresActive.push('dishwasher');
       }
       if (document.querySelector('#filter-parking').checked) {
-        featuresActive[featuresActive.length] = 'parking';
+        featuresActive.push('parking');
       }
       if (document.querySelector('#filter-washer').checked) {
-        featuresActive[featuresActive.length] = 'washer';
+        featuresActive.push('washer');
       }
       if (document.querySelector('#filter-elevator').checked) {
-        featuresActive[featuresActive.length] = 'elevator';
+        featuresActive.push('elevator');
       }
       if (document.querySelector('#filter-conditioner').checked) {
-        featuresActive[featuresActive.length] = 'conditioner';
+        featuresActive.push('conditioner');
       }
 
       return featuresActive;
@@ -69,13 +69,16 @@
 
     var features = getFeatures();
 
-
     if (features.length > 0) {
-      for (var d = 0; d < advertisement.offer.features.length; d++) {
-        if (features.indexOf(advertisement.offer.features[d]) === -1) {
+      var featuresAdvertisement = Array.from(advertisement.offer.features);
+
+      featuresAdvertisement
+        .filter(function (feature) {
+          return features.indexOf(feature) === -1;
+        })
+        .forEach(function () {
           return false;
-        }
-      }
+        });
     }
 
     if (advertisement.offer.type !== type && type !== 'any') {
@@ -114,28 +117,31 @@
   var updateAdvertisementsPin = function () {
     var newRenderAdvertisements = [];
 
-    advertisementsRender.forEach(function (advertisement) {
-      if (getSimilarity(advertisement)) {
-        var indexArrayNewRenderAdvertisements = newRenderAdvertisements.length;
-        newRenderAdvertisements[indexArrayNewRenderAdvertisements] = advertisement;
-      }
-    });
+    advertisementsRender
+      .filter(function (advertisement) {
+        return getSimilarity(advertisement);
+      })
+      .forEach(function (advertisement) {
+        newRenderAdvertisements.push(advertisement);
+      });
 
     render(newRenderAdvertisements);
   };
 
   var filter = function () {
     var applyFilter = window.debounce(function () {
-      var mapPin = document.querySelectorAll('.map__pin');
+      var mapPin = Array.from(document.querySelectorAll('.map__pin'));
       var mapPinMainElement = document.querySelector('.map__pin--main');
 
       window.card.hide();
 
-      for (var b = 0; b < mapPin.length; b++) {
-        if (mapPin[b] !== mapPinMainElement) {
-          mapPin[b].remove();
-        }
-      }
+      mapPin
+        .filter(function (pin) {
+          return pin !== mapPinMainElement;
+        })
+        .forEach(function (pin) {
+          pin.remove();
+        });
 
       advertisementsRender = window.data;
       updateAdvertisementsPin();

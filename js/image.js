@@ -12,11 +12,13 @@
   var fileElement = document.querySelector('.ad-form__field');
 
   var onHiddenError = function (evt) {
-    evt.target.removeEventListener('click', onHiddenError);
-    evt.target.remove();
+    var element = evt.target;
+
+    element.removeEventListener('click', onHiddenError);
+    element.remove();
   };
 
-  var checkFile = function (file) {
+  var validateFile = function (file) {
     if (!file) {
       return false;
     }
@@ -30,20 +32,28 @@
     return matches;
   };
 
-  fileChooser.addEventListener('change', function () {
+  var creatErrorMessageElement = function () {
+    var messageErrorElement = document.createElement('span');
+
+    messageErrorElement.classList.add('info--error');
+    messageErrorElement.textContent = 'Не допустимый формат файла';
+
+    return messageErrorElement;
+  };
+
+  var onChangeAvatarUser = function () {
     var file = fileChooser.files[0];
 
     var filedInfoError = fileElement.querySelector('.info--error');
 
-    if (!checkFile(file)) {
+    if (!validateFile(file)) {
       var errorPreviewImgSrc = 'img/muffin-white.svg';
 
       headerUploadElementClassList.add('error--load');
       preview.src = errorPreviewImgSrc;
 
-      var messageErrorElement = document.createElement('span');
-      messageErrorElement.classList.add('info--error');
-      messageErrorElement.textContent = 'Не допустимый формат файла';
+      var messageErrorElement = creatErrorMessageElement();
+
       fileElement.appendChild(messageErrorElement);
       document.querySelector('.info--error').addEventListener('click', onHiddenError);
 
@@ -70,7 +80,9 @@
     });
 
     reader.readAsDataURL(file);
-  });
+  };
+
+  fileChooser.addEventListener('change', onChangeAvatarUser);
 
   var filePhoto = document.querySelector('.ad-form__upload input[type=file]');
   var previewPhoto = document.querySelector('.ad-form__photo');
@@ -80,19 +92,21 @@
 
   var uploadElement = document.querySelector('.ad-form__upload');
 
-  filePhoto.addEventListener('change', function () {
+  var onChangePhoto = function () {
     var file = filePhoto.files[0];
 
     var previewPhotoImg = previewPhoto.querySelector('img');
     var uploadInfoError = uploadElement.querySelector('.info--error');
 
-    if (!checkFile(file)) {
+    if (!validateFile(file)) {
       photoContainerClassList.add('error--load');
 
       var messageErrorElement = document.createElement('span');
+
       messageErrorElement.classList.add('info--error');
       messageErrorElement.textContent = 'Не допустимый формат файла';
-      document.querySelector('.ad-form__upload').appendChild(messageErrorElement);
+      uploadElement.appendChild(messageErrorElement);
+
       document.querySelector('.info--error').addEventListener('click', onHiddenError);
 
       if (previewPhotoImg) {
@@ -115,10 +129,12 @@
 
     reader.addEventListener('load', function () {
       var urlImage = reader.result;
+
       if (previewPhotoImg) {
         previewPhoto.src = urlImage;
       } else {
         var img = document.createElement('img');
+
         img.src = urlImage;
         img.style.maxWidth = '70px';
         img.style.maxHeight = '70px';
@@ -127,5 +143,7 @@
     });
 
     reader.readAsDataURL(file);
-  });
+  };
+
+  filePhoto.addEventListener('change', onChangePhoto);
 })();
