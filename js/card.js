@@ -3,7 +3,7 @@
 (function () {
   var PHOTOS_IMAGE_WIDTH = 45;
   var PHOTOS_IMAGE_HEIGHT = 40;
-  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
+  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftButtonMouseKey;
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
