@@ -18,7 +18,7 @@
 
   var mapPinMainElement = document.querySelector('.map__pin--main');
 
-  var defailtPinCoordinates = {
+  var defaultPinCoordinates = {
     top: mapPinMainElement.style.top,
     left: mapPinMainElement.style.left,
   };
@@ -373,8 +373,8 @@
       textarea.value = '';
     });
 
-    mapPinMainElement.style.top = defailtPinCoordinates.top;
-    mapPinMainElement.style.left = defailtPinCoordinates.left;
+    mapPinMainElement.style.top = defaultPinCoordinates.top;
+    mapPinMainElement.style.left = defaultPinCoordinates.left;
 
     var locationX = mapPinMainElement.offsetLeft + window.pin.WIDTH / 2;
     var locationY = mapPinMainElement.offsetTop + window.pin.HEIGHT / 2;
@@ -417,9 +417,9 @@
     housingGuests.removeEventListener('input', onUpdateFilter);
     housingRooms.removeEventListener('input', onUpdateFilter);
 
-    var featureFilets = document.querySelectorAll('input.map__checkbox');
+    var featureFilters = document.querySelectorAll('input.map__checkbox');
 
-    featureFilets.forEach(function (feature) {
+    featureFilters.forEach(function (feature) {
       feature.removeEventListener('change', onUpdateFilter);
     });
   };
@@ -443,9 +443,9 @@
     housingGuests.addEventListener('input', onUpdateFilter);
     housingRooms.addEventListener('input', onUpdateFilter);
 
-    var featureFiletArray = document.querySelectorAll('input.map__checkbox');
+    var featureFilterArray = document.querySelectorAll('input.map__checkbox');
 
-    featureFiletArray.forEach(function (feature) {
+    featureFilterArray.forEach(function (feature) {
       feature.addEventListener('change', onUpdateFilter);
     });
 

@@ -65,8 +65,8 @@
     var reader = new FileReader();
 
     reader.addEventListener('load', function () {
-      var url = reader.result;
-      preview.src = url;
+      var urlImage = reader.result;
+      preview.src = urlImage;
     });
 
     reader.readAsDataURL(file);
@@ -114,15 +114,15 @@
     var reader = new FileReader();
 
     reader.addEventListener('load', function () {
-      var url = reader.result;
+      var urlImage = reader.result;
       if (previewPhotoImg) {
-        previewPhoto.src = url;
+        previewPhoto.src = urlImage;
       } else {
         var img = document.createElement('img');
-        img.src = url;
+        img.src = urlImage;
         img.style.maxWidth = '70px';
         img.style.maxHeight = '70px';
-        previewPhoto.appendChild(img);
+        previewPhoto.appendChild(urlImage);
       }
     });
 

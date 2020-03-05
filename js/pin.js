@@ -2,7 +2,7 @@
 
 (function () {
   var ESC_KEY = window.constants.escKey;
-  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftBittonMouseKey;
+  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftButtonMouseKey;
 
   var PIN_WIDTH = 62;
   var PIN_HEIGHT = 62;

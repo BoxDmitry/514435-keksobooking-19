@@ -12,7 +12,7 @@
   window.constants = {
     escKey: ESC_KEY,
     enterKey: ENTER_KEY,
-    leftBittonMouseKey: LEFT_BUTTON_MOUSE_KEY,
+    leftButtonMouseKey: LEFT_BUTTON_MOUSE_KEY,
     mapWidth: MAP_WIDTH,
     mapHeightMin: MAP_HEIGHT_MIN,
     mapHeightMax: MAP_HEIGHT_MAX,
