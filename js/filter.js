@@ -36,36 +36,36 @@
     }
   };
 
+  var getFeatures = function () {
+    var featuresActive = [];
+
+    if (document.querySelector('#filter-wifi').checked) {
+      featuresActive.push('wifi');
+    }
+    if (document.querySelector('#filter-dishwasher').checked) {
+      featuresActive.push('dishwasher');
+    }
+    if (document.querySelector('#filter-parking').checked) {
+      featuresActive.push('parking');
+    }
+    if (document.querySelector('#filter-washer').checked) {
+      featuresActive.push('washer');
+    }
+    if (document.querySelector('#filter-elevator').checked) {
+      featuresActive.push('elevator');
+    }
+    if (document.querySelector('#filter-conditioner').checked) {
+      featuresActive.push('conditioner');
+    }
+
+    return featuresActive;
+  };
+
   var getSimilarity = function (advertisement) {
     var type = filterElement.housingType.value === 'any' ? 'any' : filterElement.housingType.value;
     var rooms = filterElement.housingRooms.value === 'any' ? 'any' : Number(filterElement.housingRooms.value);
-    var price = filterElement.housingPrice.value;
     var guests = filterElement.housingGuests.value === 'any' ? 'any' : Number(filterElement.housingGuests.value);
-
-    var getFeatures = function () {
-      var featuresActive = [];
-
-      if (document.querySelector('#filter-wifi').checked) {
-        featuresActive.push('wifi');
-      }
-      if (document.querySelector('#filter-dishwasher').checked) {
-        featuresActive.push('dishwasher');
-      }
-      if (document.querySelector('#filter-parking').checked) {
-        featuresActive.push('parking');
-      }
-      if (document.querySelector('#filter-washer').checked) {
-        featuresActive.push('washer');
-      }
-      if (document.querySelector('#filter-elevator').checked) {
-        featuresActive.push('elevator');
-      }
-      if (document.querySelector('#filter-conditioner').checked) {
-        featuresActive.push('conditioner');
-      }
-
-      return featuresActive;
-    };
+    var price = filterElement.housingPrice.value;
 
     var features = getFeatures();
 
@@ -93,19 +93,21 @@
       return false;
     }
 
+    var priceAdvertisement = advertisement.offer.price;
+
     switch (price) {
       case 'middle':
-        if (advertisement.offer.price < MaxAndMinPrice.min.middle && advertisement.offer.price > MaxAndMinPrice.max.middle) {
+        if (priceAdvertisement < MaxAndMinPrice.min.middle && priceAdvertisement > MaxAndMinPrice.max.middle) {
           return false;
         }
         break;
       case 'low':
-        if (advertisement.offer.price > MaxAndMinPrice.min.low) {
+        if (priceAdvertisement > MaxAndMinPrice.min.low) {
           return false;
         }
         break;
       case 'high':
-        if (advertisement.offer.price < MaxAndMinPrice.max.high) {
+        if (priceAdvertisement < MaxAndMinPrice.max.high) {
           return false;
         }
         break;
