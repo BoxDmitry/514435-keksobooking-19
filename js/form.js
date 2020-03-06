@@ -463,7 +463,7 @@
       feature.addEventListener('change', onUpdateFilter);
     });
 
-    mapElement.classList.remove('map--faded');
+    mapElementClassList.remove('map--faded');
     formElementClassList.remove('ad-form--disabled');
 
     var inputElements = Array.from(document.querySelectorAll('input'));
