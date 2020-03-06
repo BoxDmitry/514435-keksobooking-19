@@ -171,10 +171,11 @@
   var addErrorClassElement = function (selector, messageError, errorShowStat) {
     var element = document.querySelector(selector);
     var elementParentNode = element.parentNode;
+    var elementParentNodeClassList = elementParentNode.classList;
     var infoError = elementParentNode.querySelector('.info--error');
 
     if (errorShowStat) {
-      element.parentNode.classList.add('error--send');
+      elementParentNodeClassList.add('error--send');
     }
     if (!infoError) {
       var messageErrorElement = document.createElement('span');
