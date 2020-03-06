@@ -105,6 +105,7 @@
 
       messageErrorElement.classList.add('info--error');
       messageErrorElement.textContent = 'Не допустимый формат файла';
+
       uploadElement.appendChild(messageErrorElement);
 
       document.querySelector('.info--error').addEventListener('click', onHiddenError);
@@ -138,6 +139,7 @@
         img.src = urlImage;
         img.style.maxWidth = '70px';
         img.style.maxHeight = '70px';
+
         previewPhoto.appendChild(urlImage);
       }
     });
