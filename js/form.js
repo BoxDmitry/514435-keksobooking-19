@@ -168,21 +168,21 @@
     }
   };
 
-  var addErrorClassElement = function (nameElement, messageError, errorShowStat) {
-    var element = document.querySelector(nameElement);
+  var addErrorClassElement = function (selector, messageError, errorShowStat) {
+    var element = document.querySelector(selector);
     var elementParentNode = element.parentNode;
-    var elementParentNodeClassList = elementParentNode.classList;
     var infoError = elementParentNode.querySelector('.info--error');
 
     if (errorShowStat) {
       element.parentNode.classList.add('error--send');
     }
-    if (infoError) {
+    if (!infoError) {
       var messageErrorElement = document.createElement('span');
-      elementParentNodeClassList.add('info--error');
+      var messageErrorElementClassList = messageErrorElement.classList;
+      messageErrorElementClassList.add('info--error');
       messageErrorElement.textContent = messageError;
       elementParentNode.appendChild(messageErrorElement);
-      infoError.addEventListener('click', onHiddenErrorMessage);
+      messageErrorElement.addEventListener('click', onHiddenErrorMessage);
     } else {
       infoError.textContent = messageError;
     }
@@ -286,40 +286,6 @@
     successElement.remove();
   };
 
-  var onSendForm = function (evt) {
-    evt.preventDefault();
-
-    var validateFormStat = true;
-
-    INPUTS_FORM_NAME
-      .filter(function (inputName) {
-        return !validateForm(inputName, true);
-      })
-      .forEach(function () {
-        validateFormStat = false;
-      });
-
-    if (validateFormStat) {
-      var onSuccess = function () {
-        var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-        var successMessageElement = successElement.querySelector('.success__message');
-
-        var successTextHTML = 'Ваше объявление<br>успешно размещено!';
-
-        successMessageElement.innerHTML = successTextHTML;
-
-        successElement.addEventListener('click', onHideSuccessClick);
-        document.addEventListener('keydown', onHideSuccessKeydown);
-
-        mainElement.appendChild(successElement);
-
-        disableForm();
-      };
-
-      window.backend.save(onSuccess, window.backend.API_URL.save, new FormData(formElement));
-    }
-  };
-
   var disableElements = function (selector, stat) {
     var inputElements = Array.from(document.querySelectorAll(selector));
 
@@ -340,22 +306,7 @@
 
   disableInputForm();
 
-  var disableForm = function () {
-    formElementClassList.add('ad-form--disabled');
-    mapElementClassList.add('map--faded');
-
-    disableInputForm();
-
-    var mapPins = Array.from(document.querySelectorAll('.map__pin'));
-
-    mapPins
-      .filter(function (pin) {
-        return pin !== mapPinMainElement;
-      })
-      .forEach(function (pin) {
-        pin.remove();
-      });
-
+  var restartDefaultInput = function () {
     var inputElementsRemove = Array.from(document.querySelectorAll('input'));
 
     inputElementsRemove.forEach(function (input) {
@@ -412,6 +363,25 @@
     if (photoContainerImg) {
       photoContainerImg.remove();
     }
+  };
+
+  var disableForm = function () {
+    formElementClassList.add('ad-form--disabled');
+    mapElementClassList.add('map--faded');
+
+    disableInputForm();
+
+    var mapPins = Array.from(document.querySelectorAll('.map__pin'));
+
+    mapPins
+      .filter(function (pin) {
+        return pin !== mapPinMainElement;
+      })
+      .forEach(function (pin) {
+        pin.remove();
+      });
+
+    restartDefaultInput();
 
     formRoomsSelect.removeEventListener('input', onInputCapacity);
     formTypeSelect.removeEventListener('input', onInputTypeChanged);
@@ -431,6 +401,40 @@
     featureFilters.forEach(function (feature) {
       feature.removeEventListener('change', onUpdateFilter);
     });
+  };
+
+  var onSuccessSendForm = function () {
+    var successElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+    var successMessageElement = successElement.querySelector('.success__message');
+
+    var successTextHTML = 'Ваше объявление<br>успешно размещено!';
+
+    successMessageElement.innerHTML = successTextHTML;
+
+    successElement.addEventListener('click', onHideSuccessClick);
+    document.addEventListener('keydown', onHideSuccessKeydown);
+
+    mainElement.appendChild(successElement);
+
+    disableForm();
+  };
+
+  var onSendForm = function (evt) {
+    evt.preventDefault();
+
+    var validateFormStat = true;
+
+    INPUTS_FORM_NAME
+      .filter(function (inputName) {
+        return !validateForm(inputName, true);
+      })
+      .forEach(function () {
+        validateFormStat = false;
+      });
+
+    if (validateFormStat) {
+      window.backend.save(onSuccessSendForm, window.backend.API_URL.save, new FormData(formElement));
+    }
   };
 
   var onResetForm = function () {
