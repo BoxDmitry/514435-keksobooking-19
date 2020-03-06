@@ -81,15 +81,21 @@
         });
     }
 
-    if (advertisement.offer.type !== type && type !== 'any') {
+    var typeAdvertisement = advertisement.offer.type;
+
+    if (typeAdvertisement !== type && type !== 'any') {
       return false;
     }
 
-    if (advertisement.offer.rooms !== rooms && rooms !== 'any') {
+    var roomsAdvertisement = advertisement.offer.rooms;
+
+    if (roomsAdvertisement !== rooms && rooms !== 'any') {
       return false;
     }
 
-    if (advertisement.offer.guests !== guests && guests !== 'any') {
+    var guestsAdvertisement = advertisement.offer.guests;
+
+    if (guestsAdvertisement !== guests && guests !== 'any') {
       return false;
     }
 
