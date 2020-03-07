@@ -50,32 +50,34 @@
 
   var onInputCapacity = function () {
     var collRooms = formRoomsSelect.value;
-    var optionCapacityArray = formCapacitySelect.querySelectorAll('option');
+    var optionCapacityArray = Array.from(formCapacitySelect.querySelectorAll('option'));
 
-    for (var r = 0; r < optionCapacityArray.length; r++) {
-      if (collRooms < MAX_CAPACITY_ROOMS) {
-        var elementCapacityMin = optionCapacityArray[r];
-        var capacityMinValue = Number(elementCapacityMin.value);
+    optionCapacityArray
+      .forEach(function (option) {
+        if (collRooms < MAX_CAPACITY_ROOMS) {
+          var elementCapacityMin = option;
+          var capacityMinValue = Number(elementCapacityMin.value);
 
-        if (collRooms < capacityMinValue || capacityMinValue === 0) {
-          elementCapacityMin.disabled = true;
-          elementCapacityMin.selected = false;
+          if (collRooms < capacityMinValue || capacityMinValue === 0) {
+            elementCapacityMin.disabled = true;
+            elementCapacityMin.selected = false;
+          } else {
+            elementCapacityMin.disabled = false;
+            elementCapacityMin.selected = false;
+          }
         } else {
-          elementCapacityMin.disabled = false;
-        }
-      } else {
-        var elementCapacityMax = optionCapacityArray[r];
-        var capacityMaxValue = Number(elementCapacityMax.value);
+          var elementCapacityMax = option;
+          var capacityMaxValue = Number(elementCapacityMax.value);
 
-        if (capacityMaxValue === 0) {
-          elementCapacityMax.disabled = false;
-          elementCapacityMax.selected = true;
-        } else {
-          elementCapacityMax.disabled = true;
-          elementCapacityMax.selected = false;
+          if (capacityMaxValue === 0) {
+            elementCapacityMax.disabled = false;
+            elementCapacityMax.selected = true;
+          } else {
+            elementCapacityMax.disabled = true;
+            elementCapacityMax.selected = false;
+          }
         }
-      }
-    }
+      });
   };
 
   var onInputTypeChanged = function () {
@@ -108,18 +110,18 @@
     var timeIn = formTimeInSelect.value;
     var optionTimeArray = formTimeOutSelect.querySelectorAll('option');
 
-    for (var y = 0; y < optionTimeArray.length; y++) {
-      optionTimeArray[y].selected = timeIn === optionTimeArray[y].value;
-    }
+    optionTimeArray.forEach(function (option) {
+      option.selected = timeIn === option.value;
+    });
   };
 
   var onInputTimeOut = function () {
     var timeOut = formTimeOutSelect.value;
-    var optionTimeArray = formTimeInSelect.querySelectorAll('option');
+    var optionTimeArray = Array.from(formTimeInSelect.querySelectorAll('option'));
 
-    for (var e = 0; e < optionTimeArray.length; e++) {
-      optionTimeArray[e].selected = timeOut === optionTimeArray[e].value;
-    }
+    optionTimeArray.forEach(function (option) {
+      option.selected = timeOut === option.value;
+    });
   };
 
   var onInputForm = function (evt) {
@@ -452,12 +454,13 @@
     }
 
     window.filter.update();
+
     housingType.addEventListener('input', onUpdateFilter);
     housingPrice.addEventListener('input', onUpdateFilter);
     housingGuests.addEventListener('input', onUpdateFilter);
     housingRooms.addEventListener('input', onUpdateFilter);
 
-    var featureFilterArray = document.querySelectorAll('input.map__checkbox');
+    var featureFilterArray = Array.from(document.querySelectorAll('input.map__checkbox'));
 
     featureFilterArray.forEach(function (feature) {
       feature.addEventListener('change', onUpdateFilter);
