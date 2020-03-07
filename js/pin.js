@@ -20,7 +20,7 @@
     var keyButton = evt.key;
 
     if (keyButton === ESC_KEY) {
-      hiddenAdvertisement();
+      hideAdvertisement();
     }
   };
 
@@ -28,30 +28,35 @@
     var button = evt.button;
 
     if (button === LEFT_BUTTON_MOUSE_KEY) {
-      hiddenAdvertisement();
+      hideAdvertisement();
     }
   };
 
-  var hiddenAdvertisement = function () {
-    var mapPinActivate = document.querySelector('button.map__pin--active');
-    var mapPinActivateClassList = mapPinActivate.classList;
-
+  var hideAdvertisement = function () {
     var card = document.querySelector('.map__card');
-    var clossButtonCard = card.querySelector('.popup__close');
 
-    document.removeEventListener('keydown', onHiddenAdvertisementEsc);
-    clossButtonCard.removeEventListener('click', onButtonHiddenAdvertisement);
-    card.remove();
-    mapPinActivateClassList.remove('map__pin--active');
+    if (card) {
+      var clossButtonCard = card.querySelector('.popup__close');
+
+      var mapPinActivate = document.querySelector('button.map__pin--active');
+      var mapPinActivateClassList = mapPinActivate.classList;
+
+      document.removeEventListener('keydown', onHiddenAdvertisementEsc);
+      clossButtonCard.removeEventListener('click', onButtonHiddenAdvertisement);
+
+      card.remove();
+
+      mapPinActivateClassList.remove('map__pin--active');
+    }
   };
 
   var renderCard = window.card.render;
 
   var onShowAdvertisement = function (evt) {
     var buttonAсtive = document.querySelector('button.map__pin--active');
-    var buttonClickElement = evt.target;
-    var buttonClickElementTagName = buttonClickElement.tagName;
-    var buttonClickElementClassList = buttonClickElement.classList;
+    var elementClick = evt.target;
+    var elementClickTagName = elementClick.tagName;
+    var elementClickClassList = elementClick.classList;
 
     var cardElement = document.querySelector('.map__card');
 
@@ -59,10 +64,13 @@
       buttonAсtive.classList.remove('map__pin--active');
     }
 
-    if (buttonClickElementTagName === 'BUTTON') {
-      buttonClickElementClassList.add('map__pin--active');
+    if (elementClickTagName === 'BUTTON') {
+      elementClickClassList.add('map__pin--active');
     } else {
-      buttonClickElementClassList.add('map__pin--active');
+      var elementParent = elementClick.parentNode;
+      var elementParentClassList = elementParent.classList;
+
+      elementParentClassList.add('map__pin--active');
     }
 
     if (cardElement) {
@@ -73,8 +81,14 @@
     var card = document.createDocumentFragment();
 
     card.appendChild(renderCard(window.data[idAdvertisement]));
-    document.addEventListener('keydown', onHiddenAdvertisementEsc);
+
     mapElement.appendChild(card);
+
+    cardElement = document.querySelector('.map__card');
+    var clossButtonElement = cardElement.querySelector('.popup__close');
+
+    document.addEventListener('keydown', onHiddenAdvertisementEsc);
+    clossButtonElement.addEventListener('click', onButtonHiddenAdvertisement);
   };
 
   var renderPin = function (advertisement, id) {
@@ -98,5 +112,6 @@
     HEIGHT_OFFSET: PIN_HEIGHT_OFFSET,
     render: renderPin,
     pointsElement: mapPointsElement,
+    cardHide: hideAdvertisement,
   };
 })();

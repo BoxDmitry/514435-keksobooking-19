@@ -3,45 +3,8 @@
 (function () {
   var PHOTOS_IMAGE_WIDTH = 45;
   var PHOTOS_IMAGE_HEIGHT = 40;
-  var LEFT_BUTTON_MOUSE_KEY = window.constants.leftButtonMouseKey;
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
-  var hideAdvertisement = function () {
-    var card = document.querySelector('.map__card');
-
-    if (card) {
-      var clossButtonElement = card.querySelector('.popup__close');
-      var pinActiveElement = document.querySelector('button.map__pin--active');
-
-      document.removeEventListener('keydown', onHideAdvertisement);
-      clossButtonElement.removeEventListener('click', onButtonHideAdvertisement);
-
-      card.remove();
-
-      if (pinActiveElement) {
-        var pinActiveElementClassList = pinActiveElement.classList;
-
-        pinActiveElementClassList.remove('map__pin--active');
-      }
-    }
-  };
-
-  var onHideAdvertisement = function (evt) {
-    var keyButton = evt.key;
-
-    if (keyButton === window.constants.escKey) {
-      hideAdvertisement();
-    }
-  };
-
-  var onButtonHideAdvertisement = function (evt) {
-    var button = evt.button;
-
-    if (button === LEFT_BUTTON_MOUSE_KEY) {
-      hideAdvertisement();
-    }
-  };
 
   var renderCard = function (advertisement) {
     var cardElement = cardTemplate.cloneNode(true);
@@ -49,7 +12,6 @@
     var avatarElement = cardElement.querySelector('.popup__avatar');
     var photosElement = cardElement.querySelector('.popup__photos');
     var featuresElement = cardElement.querySelector('.popup__features');
-    var clossButtonElement = cardElement.querySelector('.popup__close');
 
     var avatarAdvertisement = advertisement.author.avatar;
     var photosAdvertisement = advertisement.offer.photos;
@@ -158,13 +120,10 @@
 
     avatarElement.src = avatarAdvertisement;
 
-    clossButtonElement.addEventListener('click', onButtonHideAdvertisement);
-
     return cardElement;
   };
 
   window.card = {
     render: renderCard,
-    hide: hideAdvertisement,
   };
 })();

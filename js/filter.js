@@ -70,15 +70,20 @@
     var features = getFeatures();
 
     if (features.length > 0) {
-      var featuresAdvertisement = Array.from(advertisement.offer.features);
+      var featuresAdvertisement = advertisement.offer.features;
 
-      featuresAdvertisement
-        .filter(function (feature) {
-          return features.indexOf(feature) === -1;
-        })
-        .forEach(function () {
-          return false;
+      var statFilter = true;
+
+      features
+        .forEach(function (feature) {
+          if (featuresAdvertisement.indexOf(feature) === -1) {
+            statFilter = false;
+          }
         });
+
+      if (!statFilter) {
+        return false;
+      }
     }
 
     var typeAdvertisement = advertisement.offer.type;
@@ -141,7 +146,7 @@
       var mapPin = Array.from(document.querySelectorAll('.map__pin'));
       var mapPinMainElement = document.querySelector('.map__pin--main');
 
-      window.card.hide();
+      window.pin.cardHide();
 
       mapPin
         .filter(function (pin) {
