@@ -72,7 +72,7 @@
     var descriptionAdvertisement = advertisement.offer.description;
     var descriptionAdvertisementLength = descriptionAdvertisement.length;
 
-    checkElement('.popup__type', descriptionAdvertisementLength, descriptionAdvertisement);
+    checkElement('.popup__description', descriptionAdvertisementLength, descriptionAdvertisement);
 
     var guestsAdvertisement = advertisement.offer.guests;
     var roomsAdvertisement = advertisement.offer.rooms;
