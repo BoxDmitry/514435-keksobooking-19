@@ -161,8 +161,9 @@
   var removeErrorElement = function (selector) {
     var errorElement = document.querySelector(selector);
     var errorElementParent = errorElement.parentNode;
+    var errorElementParentClassList = errorElementParent.classList;
 
-    errorElementParent.classList.remove('error--send');
+    errorElementParentClassList.remove('error--send');
 
     if (errorElementParent.querySelector('.info--error')) {
       errorElementParent.querySelector('.info--error').removeEventListener('click', onHiddenErrorMessage);
@@ -174,11 +175,13 @@
     var element = document.querySelector(selector);
     var elementParentNode = element.parentNode;
     var elementParentNodeClassList = elementParentNode.classList;
+
     var infoError = elementParentNode.querySelector('.info--error');
 
     if (errorShowStat) {
       elementParentNodeClassList.add('error--send');
     }
+
     if (!infoError) {
       var messageErrorElement = document.createElement('span');
       var messageErrorElementClassList = messageErrorElement.classList;

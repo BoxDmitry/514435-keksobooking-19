@@ -15,6 +15,8 @@
     TEXT: 'text',
   };
 
+  var mainElement = document.querySelector('main');
+
   var onRepeatRequestKey = function (evt) {
     var keyButton = evt.key;
 
@@ -57,8 +59,10 @@
   var onError = function (message) {
     var errorElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 
-    errorElement.querySelector('.error__message').textContent = message;
-    document.querySelector('main').appendChild(errorElement);
+    var errorMessageElement = errorElement.querySelector('.error__message');
+
+    errorMessageElement.textContent = message;
+    mainElement.appendChild(errorElement);
 
     var errorWindow = document.querySelector('.error');
     var buttonError = errorWindow.querySelector('.error__button');

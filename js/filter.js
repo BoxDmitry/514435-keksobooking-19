@@ -75,10 +75,11 @@
       var statFilter = true;
 
       features
-        .forEach(function (feature) {
-          if (featuresAdvertisement.indexOf(feature) === -1) {
-            statFilter = false;
-          }
+        .filter(function (feature) {
+          return featuresAdvertisement.indexOf(feature) === -1;
+        })
+        .forEach(function () {
+          statFilter = false;
         });
 
       if (!statFilter) {
